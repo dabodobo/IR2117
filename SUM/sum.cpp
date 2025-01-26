@@ -13,12 +13,14 @@ int main(){
 	int num;
 	std::cout << "Enter a number: ";
 	std::cin >> num;
-	if(num >= 1){
-		std::cout << "The sum from 1 to " << num << " is " << suma(num) << std::endl;
-	}
-	else{
+	while(num < 1){
 		std::cout << "Rango de número incorrecto" << std::endl;
+		std::cout << "Enter a number: ";
+		std::cin >> num;
 	}
+
+	std::cout << "The sum from 1 to " << num << " is " << suma(num) << std::endl;
+	
 
 	return 0;
 }
