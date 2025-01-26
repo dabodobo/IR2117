@@ -27,6 +27,11 @@ int main(){
 		std::cout << "Las soluciones son " << sol[0] << " y " << sol[1] << std::endl;
 	}
 	
+	else{
+		std::cout << "La solución es compleja" << std::endl;
+	
+	}
+	
 
 
 	return 0;
