@@ -21,6 +21,11 @@ int main(){
 	int b;
 	std::cout << "Enter b number >= 1: ";
 	std::cin >> b;
+	while(b < 1){
+	
+		std::cout << "Enter b number >= 1: ";
+		std::cin >> b;
+	}
 
 	std::cout << "The sum from " << a << " to " << b << " is " << suma(a,b) << std::endl;
 	
