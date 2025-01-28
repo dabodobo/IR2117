@@ -1,6 +1,6 @@
 #include <chrono>  
 #include "rclcpp/rclcpp.hpp" 
-#include "std msgs/msg/string.hpp" 
+#include "std_msgs/msg/string.hpp" 
 using namespace std::chrono_literals;
 int main(int argc, char * argv[]){
 	rclcpp::init(argc,argv);
@@ -11,7 +11,7 @@ int main(int argc, char * argv[]){
 	rclcpp::WallRate loop_rate(500ms);
 	
 	while(rclcpp::ok()){
-		message.data = "Hello, world! " + std::to_string(publis_count++);
+		message.data = "Hello, world! " + std::to_string(publish_count++);
 		publisher->publish(message);
 		rclcpp:spin_some(node);
 		loop_rate.sleep();
