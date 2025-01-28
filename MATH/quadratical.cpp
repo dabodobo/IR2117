@@ -28,6 +28,7 @@ int main(){
 	}
 	
 	else{
+		
 		std::cout << "La solución es compleja" << std::endl;
 	
 	}
