@@ -22,12 +22,22 @@ int main(){
 	std::cin >> c;
 	std::string tipo;
 	if(EsTriangulo){
-		if(a ==){
+		if(a == b && b == c && c == a){
+			tipo = "equilatero";
 		}
-	
+		else if(a != b && b != c && c != a){
+			tipo = "escaleno";
+		}
+		else{
+			tipo = "isósceles";
+		}
+		std::cout << "Tu triangulo " << a << "," << b << "," << c <<" es " << tipo << std::endl;
+			
 	}
-	
-	std::cout >> "Tu triangulo es (tipo) ";
+	else{
+	std::cout << "Tu triangulo " << a << "," << b << "," << c <<" NO es un triángulo"<< std::endl;
+			
+	}
 	return 0;
 
 }
