@@ -13,7 +13,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_execturable(sum src/sum.cpp)
+add_executable(sum src/sum.cpp)
 ament_target_dependencies(sum rclcpp std_msgs)
 
 install(TARGETS

@@ -13,7 +13,7 @@ int main(int argc, char * argv[]){
 	while(rclcpp::ok()){ //Se le pregunta a ros si está todo bien, es lo mismo que while true
 		message.data = "Hello, world! " + std::to_string(publish_count++); //Creación del mensaje
 		publisher->publish(message); // se envía el mensaje
-		rclcpp:spin_some(node); //espera a hasta que se asegura que se ha enviado el topico
+		rclcpp::spin_some(node); //espera a hasta que se asegura que se ha enviado el topico
 		loop_rate.sleep(); // tiempo de espera.
 	
 	}
