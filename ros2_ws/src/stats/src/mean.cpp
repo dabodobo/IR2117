@@ -18,7 +18,7 @@ void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){
 
 int main(int argc, char * argv[]){
 	count = 0;
-	sum = 0.0;
+	
     rclcpp::init(argc, argv);
     auto node = rclcpp::Node::make_shared("mean"); //creo el nodo media
     auto subscription = 
