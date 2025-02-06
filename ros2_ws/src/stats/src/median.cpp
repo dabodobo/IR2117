@@ -15,10 +15,14 @@ void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){
     
     float num = msg->data;
     numeros.push_back(num);
+    std::sort(numeros.begin(),numeros.end());
     
-   
+   if(numeros.size() % 2 != 0){
     median = numeros[numeros.size()/2];
-    
+    }
+    else{
+    	median = (numeros[numeros.size()/2] + numeros[(numeros.size()/2)-1]) / 2;
+    }
     out_msg.data = median;
     publisher->publish(out_msg);
 }
@@ -36,4 +40,5 @@ int main(int argc, char * argv[]){
     rclcpp::shutdown();
     return 0;
 }
+
 
