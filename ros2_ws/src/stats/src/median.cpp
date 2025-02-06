@@ -9,15 +9,15 @@ std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Float32>> publisher; //declaro 
 std::vector<float> numeros;
 void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){ 
 
-    std::vector<float> ordenados;
+    
     float median;
     std_msgs::msg::Float32 out_msg;
     
     float num = msg->data;
     numeros.push_back(num);
     
-    ordenados = std::sort(numeros.begin(), numeros.end());
-    median = ordenados[ordenados.size()/2];
+   
+    median = numeros[numeros.size()/2];
     
     out_msg.data = median;
     publisher->publish(out_msg);
