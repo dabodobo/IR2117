@@ -7,18 +7,17 @@
 
 std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Float32>> publisher; //declaro el subscriptor para el callback
 std::map<float,int> counter;
-
+int mayor = 0;
 void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){ 
 
     
     float num = msg->data;
     counter[num]+=1;
-    int mayor = 0;
-    float valor_mayor;
-    for(int i : counter ){
-    	if(counter[i] > mayor){
-    		mayor = counter[i];
-    		valor_mayor = i;
+    float valor_mayor = 0.0;
+    for(std::pair<float,int> i : counter ){
+    	if(i.second > mayor){
+    		mayor = i.second;
+    		valor_mayor = i.first;
     	}
     
     }
@@ -31,7 +30,7 @@ void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){
 int main(int argc, char * argv[]){
 	
     rclcpp::init(argc, argv);
-    auto node = rclcpp::Node::make_shared("median"); //creo el nodo media
+    auto node = rclcpp::Node::make_shared("mode"); //creo el nodo mode
     auto subscription = 
         node->create_subscription<std_msgs::msg::Int32>(
             "number", 10, topic_callback); //me suscribo a topic
