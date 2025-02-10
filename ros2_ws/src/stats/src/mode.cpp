@@ -8,12 +8,11 @@
 std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Float32>> publisher; //declaro el subscriptor para el callback
 std::map<float,int> counter;
 int mayor = 0;
+float valor_mayor = 0.0;
 void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){ 
-
-    
     float num = msg->data;
     counter[num]+=1;
-    float valor_mayor = 0.0;
+    
     for(std::pair<float,int> i : counter ){
     	if(i.second > mayor){
     		mayor = i.second;
