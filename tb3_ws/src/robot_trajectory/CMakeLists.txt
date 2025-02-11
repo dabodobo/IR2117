@@ -30,6 +30,7 @@ find_package(geometry_msgs REQUIRED)
 add_executable(publisher src/square.cpp)
 ament_target_dependencies(publisher rclcpp geometry_msgs)
 install(TARGETS
+	
 	publisher
 	DESTINATION lib/${PROJECT_NAME}
 
