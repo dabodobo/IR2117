@@ -29,8 +29,11 @@ find_package(geometry_msgs REQUIRED)
 
 add_executable(publisher src/square.cpp)
 ament_target_dependencies(publisher rclcpp geometry_msgs)
+
+add_executable(turtle_square src/turtle_square.cpp)
+ament_target_dependencies(turtle_square rclcpp geometry_msgs)
 install(TARGETS
-	
+	turtle_square
 	publisher
 	DESTINATION lib/${PROJECT_NAME}
 
