@@ -19,16 +19,16 @@ int main(int argc, char *argv[]) {
     
     for(int j = 0; j < 4; j++){
     
-    	int i = 0, n = 1000 ;
+    	int i = 0, n = 200 ;	
     	
     while (rclcpp::ok() && i < n) { 
     	i++;
-    	message.linear.x = 0.1;
+    	message.linear.x = 2.0;
         publisher->publish(message);
         rclcpp::spin_some(node); 
         loop_rate.sleep(); 
     }
-     message.linear.x = 0.0; // lo paro antes de girar
+    message.linear.x = 0.0; // lo paro antes de girar
     publisher->publish(message);
     rclcpp::spin_some(node);
    
