@@ -16,10 +16,10 @@ int main(int argc, char *argv[]) {
  
     
     message.linear.x = 0.0;
-    
+    /*
     for(int j = 0; j < 4; j++){
     
-    	int i = 0, n = 200;	
+    	int i = 0, n = 1 / (0.01 * 0.1);	
     	
     while (rclcpp::ok() && i < n) { 
     	i++;
@@ -47,6 +47,21 @@ int main(int argc, char *argv[]) {
     loop_rate.sleep();
     
     }
+    */ // linear
+    
+    int i = 0, n = 1 / (0.01 * 0.1);	
+    	
+    while (rclcpp::ok() && i < n) { 
+    	i++;
+    	message.linear.x = 0.1;
+        publisher->publish(message);
+        rclcpp::spin_some(node); 
+        loop_rate.sleep(); 
+    }
+    
+    
+    
+    
     rclcpp::shutdown(); 
     return 0;
 }
