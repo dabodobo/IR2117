@@ -1,6 +1,7 @@
 #include <chrono>  
 #include "rclcpp/rclcpp.hpp" 
 #include "geometry_msgs/msg/twist.hpp"
+#include "cmath"
 
 using namespace std::chrono_literals;
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]) {
     publisher->publish(message);
     rclcpp::spin_some(node);
    
-    i = 0; n = 1.57/(0.01*0.1); // n * 10 ms * v (rad/s) = rad = 3.14/2
+    i = 0; n = (M_PI/2)/(0.01*velocidad_angular); // n * 10 ms * v (rad/s) = rad = 3.14/2
     			// n = 1.57/(0.01*0.1)
     
     while(rclcpp::ok() && i < n){
