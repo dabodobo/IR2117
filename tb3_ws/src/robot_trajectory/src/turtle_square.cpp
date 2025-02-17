@@ -8,25 +8,25 @@ using namespace std::chrono_literals;
 int main(int argc, char *argv[]) {
     rclcpp::init(argc, argv); 
     auto node = rclcpp::Node::make_shared("turtle_square"); 
-    auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10); 
+    auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10); 
     
     geometry_msgs::msg::Twist message;  //creo el mensaje cmd_vel
 
     rclcpp::WallRate loop_rate(10ms);
     
  
-    double velocidad_lineal = 0.1;
-    double velocidad_angular = 0.1;
-    int tamaño = 4;
+    double linear_speed = 0.1;
+    double angular_speed = 0.1;
+    int square_length = 4;
     
     message.linear.x = 0.0;
     for(int j = 0; j < 4; j++){
     
-    int i = 0, n = tamaño / (0.01 * velocidad_lineal);	
+    int i = 0, n = square_length / (0.01 * linear_speed);	
     	
     while (rclcpp::ok() && i < n) { 
     	i++;
-    	message.linear.x = velocidad_lineal;
+    	message.linear.x = linear_speed;
         publisher->publish(message);
         rclcpp::spin_some(node); 
         loop_rate.sleep(); 
@@ -35,12 +35,12 @@ int main(int argc, char *argv[]) {
     publisher->publish(message);
     rclcpp::spin_some(node);
    
-    i = 0; n = (M_PI/2)/(0.01*velocidad_angular); // n * 10 ms * v (rad/s) = rad = 3.14/2
+    i = 0; n = (M_PI/2)/(0.01*angular_speed); // n * 10 ms * v (rad/s) = rad = 3.14/2
     			// n = 1.57/(0.01*0.1)
     
     while(rclcpp::ok() && i < n){
     	i++;
-	message.angular.z = velocidad_angular;
+	message.angular.z = angular_speed;
 	publisher->publish(message);
 	rclcpp::spin_some(node); 
         loop_rate.sleep();
