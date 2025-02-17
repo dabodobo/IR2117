@@ -14,16 +14,16 @@ int main(int argc, char *argv[]) {
     rclcpp::WallRate loop_rate(10ms);
     
  
-    
+    double velocidad_lineal = 0.1;
+    double velocidad_angular = 0.1;
     message.linear.x = 0.0;
-    /*
     for(int j = 0; j < 4; j++){
     
-    	int i = 0, n = 1 / (0.01 * 0.1);	
+    int i = 0, n = 1 / (0.01 * velocidad_lineal);	
     	
     while (rclcpp::ok() && i < n) { 
     	i++;
-    	message.linear.x = 2.0;
+    	message.linear.x = velocidad_lineal;
         publisher->publish(message);
         rclcpp::spin_some(node); 
         loop_rate.sleep(); 
@@ -32,11 +32,12 @@ int main(int argc, char *argv[]) {
     publisher->publish(message);
     rclcpp::spin_some(node);
    
-    i = 0; n = 100; 
+    i = 0; n = 1.57/(0.01*0.1); // n * 10 ms * v (rad/s) = rad = 3.14/2
+    			// n = 1.57/(0.01*0.1)
     
     while(rclcpp::ok() && i < n){
     	i++;
-	message.angular.z = 1.57; //1 rad/seg
+	message.angular.z = velocidad_angular;
 	publisher->publish(message);
 	rclcpp::spin_some(node); 
         loop_rate.sleep();
@@ -47,18 +48,6 @@ int main(int argc, char *argv[]) {
     loop_rate.sleep();
     
     }
-    */ // linear
-    
-    int i = 0, n = 1 / (0.01 * 0.1);	
-    	
-    while (rclcpp::ok() && i < n) { 
-    	i++;
-    	message.linear.x = 0.1;
-        publisher->publish(message);
-        rclcpp::spin_some(node); 
-        loop_rate.sleep(); 
-    }
-    
     
     
     
