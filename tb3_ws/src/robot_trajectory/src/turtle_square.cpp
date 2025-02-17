@@ -16,10 +16,12 @@ int main(int argc, char *argv[]) {
  
     double velocidad_lineal = 0.1;
     double velocidad_angular = 0.1;
+    int tamaño = 4;
+    
     message.linear.x = 0.0;
     for(int j = 0; j < 4; j++){
     
-    int i = 0, n = 1 / (0.01 * velocidad_lineal);	
+    int i = 0, n = tamaño / (0.01 * velocidad_lineal);	
     	
     while (rclcpp::ok() && i < n) { 
     	i++;
