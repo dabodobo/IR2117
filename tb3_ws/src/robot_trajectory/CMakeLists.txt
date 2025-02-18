@@ -32,7 +32,13 @@ ament_target_dependencies(publisher rclcpp geometry_msgs)
 
 add_executable(turtle_square src/turtle_square.cpp)
 ament_target_dependencies(turtle_square rclcpp geometry_msgs)
+
+
+add_executable(square_odom src/square_odom.cpp)
+ament_target_dependencies(square_odom rclcpp geometry_msgs)
+
 install(TARGETS
+	square_odom
 	turtle_square
 	publisher
 	DESTINATION lib/${PROJECT_NAME}
