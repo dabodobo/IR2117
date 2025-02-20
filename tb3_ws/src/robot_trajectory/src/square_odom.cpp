@@ -30,7 +30,7 @@ float angle_dist(float base_angle, float current){
 	    }
 
 	    return dist;
-	}
+	
 }
 
 using namespace std::chrono_literals;
