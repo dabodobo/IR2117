@@ -12,6 +12,12 @@ float quat(float x, float y, float z, float w){
 	double yaw = std::atan2(siny_cosp, cosy_cosp); 
 	return yaw;
 }
+
+float dist(float base_x,float base_y, float x, float y){
+	float dist_x = x - base_x;
+	float dist_y = y - base_y;
+	return sqrt(dist_x*dist_x + dist_y*dist_y);
+}
 using namespace std::chrono_literals;
 //std::shared_ptr<rclcpp::Publisher<std_msgs::msg::String>> publisher
 std::map<std::string,float> position;
@@ -28,11 +34,13 @@ void topic_callback(const nav_msgs::msg::Odometry msg){
 	    position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
 	}
 	first_read = false;
-	
+	float x =  msg.pose.pose.position.x;
+	float y = msg.pose.pose.position.y;
 	 
-	std::cout << "Position x: " << position["x"] << std:: endl;
-	std::cout << "Position y: " << position["y"] << std:: endl;
+	std::cout << "Position x: " << x << std:: endl;
+	std::cout << "Position y: " << y << std:: endl;
 	std::cout << "Angle : " << position["angle"] << std::endl;
+	std::cout << "Distance : " << dist(position["x"],position["y"],x,y);
 	std::cout << "- - - - - - - - - - - " << std::endl << std::endl;
 	
 }
