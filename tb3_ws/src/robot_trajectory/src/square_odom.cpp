@@ -33,10 +33,18 @@ float angle_dist(float base_angle, float current){
 	
 }
 
-using namespace std::chrono_literals;
-//std::shared_ptr<rclcpp::Publisher<std_msgs::msg::String>> publisher
-std::map<std::string,float> position;
+//using namespace std::chrono_literals;
+
+
+std::map<std::string,float> ini_position;
+std::map<std::string,float> pos;
+float angle_x;
+float angle_y;
+float angle_z;
+float angle_w;
 bool first_read = true;
+
+
 
 void topic_callback(const nav_msgs::msg::Odometry msg){
 	float angle_x = msg.pose.pose.orientation.x;
@@ -44,21 +52,32 @@ void topic_callback(const nav_msgs::msg::Odometry msg){
 	float angle_z = msg.pose.pose.orientation.z;
 	float angle_w = msg.pose.pose.orientation.w;
 	if (first_read){
-	    position["x"] = msg.pose.pose.position.x;
-	    position["y"] = msg.pose.pose.position.y;
-	    position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
+	    ini_position["x"] = msg.pose.pose.position.x;
+	    ini_position["y"] = msg.pose.pose.position.y;
+	    ini_position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
 	}
 	first_read = false;
 	float x =  msg.pose.pose.position.x;
 	float y = msg.pose.pose.position.y;
 	float angle = quat(angle_x,angle_y,angle_z,angle_w);
-	 
+	
+	
+	pos["x"] =  msg.pose.pose.position.x;
+	pos ["y"] = msg.pose.pose.position.y;
+	pos["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
+	
+	
+	
 	std::cout << "Position x: " << x << std:: endl;
 	std::cout << "Position y: " << y << std:: endl;
 	std::cout << "Angle : " << angle << std::endl;
-	std::cout << "Distance : " << dist(position["x"],position["y"],x,y) << std::endl;
-	std::cout << "Dif angle: " << angle_dist(position["angle"],angle) << std::endl;
+	std::cout << "Distance : " << dist(ini_position["x"],ini_position["y"],x,y) << std::endl;
+	std::cout << "Dif angle: " << angle_dist(ini_position["angle"],angle) << std::endl;
 	std::cout << "- - - - - - - - - - - " << std::endl << std::endl;
+	
+	
+
+	
 	
 }
 
@@ -66,10 +85,20 @@ void topic_callback(const nav_msgs::msg::Odometry msg){
 int main(int argc, char *argv[]) {
     rclcpp::init(argc, argv); 
     auto node = rclcpp::Node::make_shared("node_position"); //creo el nodo odom
-    auto subscription = node->create_subscription<nav_msgs::msg::Odometry>("odom", 10, topic_callback); //creo la suscripcion a odom u call_back
-    //publisher = node->create_publisher<std_msgs::msg::String>("position", 10);
+    auto subscription = node->create_subscription<nav_msgs::msg::Odometry>("odom", 10, topic_callback); //creo la suscripcion a odom y hago call_back
+    auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
     
-    rclcpp::spin(node); //importante 
+    geometry_msgs::msg::Twist message;
+    
+    while(rclcpp::ok() && dist(ini_position["x"],ini_position["y"],pos["x"],pos["y"]) < 1){
+    	message.linear.x = 0.3;
+    	publisher -> publish(message);
+    	rclcpp::spin_some(node);
+    }
+    message.linear.x = 0.0;
+    publisher -> publish(message);
+    
+    //rclcpp::spin(node); //importante 
     rclcpp::shutdown(); 
     return 0;
 }
