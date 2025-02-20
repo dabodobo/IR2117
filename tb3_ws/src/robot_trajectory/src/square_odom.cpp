@@ -47,19 +47,17 @@ bool first_read = true;
 
 
 void topic_callback(const nav_msgs::msg::Odometry msg){
-	float angle_x = msg.pose.pose.orientation.x;
-	float angle_y = msg.pose.pose.orientation.y;
-	float angle_z = msg.pose.pose.orientation.z;
-	float angle_w = msg.pose.pose.orientation.w;
+	angle_x = msg.pose.pose.orientation.x;
+	angle_y = msg.pose.pose.orientation.y;
+	angle_z = msg.pose.pose.orientation.z;
+	angle_w = msg.pose.pose.orientation.w;
 	if (first_read){
 	    ini_position["x"] = msg.pose.pose.position.x;
 	    ini_position["y"] = msg.pose.pose.position.y;
 	    ini_position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
 	}
 	first_read = false;
-	float x =  msg.pose.pose.position.x;
-	float y = msg.pose.pose.position.y;
-	float angle = quat(angle_x,angle_y,angle_z,angle_w);
+	
 	
 	
 	pos["x"] =  msg.pose.pose.position.x;
@@ -68,11 +66,11 @@ void topic_callback(const nav_msgs::msg::Odometry msg){
 	
 	
 	
-	std::cout << "Position x: " << x << std:: endl;
-	std::cout << "Position y: " << y << std:: endl;
-	std::cout << "Angle : " << angle << std::endl;
-	std::cout << "Distance : " << dist(ini_position["x"],ini_position["y"],x,y) << std::endl;
-	std::cout << "Dif angle: " << angle_dist(ini_position["angle"],angle) << std::endl;
+	std::cout << "Position x: " << pos["x"] << std:: endl;
+	std::cout << "Position y: " << pos["y"] << std:: endl;
+	std::cout << "Angle : " << pos["angle"] << std::endl;
+	std::cout << "Distance : " << dist(ini_position["x"],ini_position["y"],pos["x"],pos["y"]) << std::endl;
+	std::cout << "Dif angle: " << angle_dist(ini_position["angle"],pos["angle"]) << std::endl;
 	std::cout << "- - - - - - - - - - - " << std::endl << std::endl;
 	
 	
@@ -97,6 +95,16 @@ int main(int argc, char *argv[]) {
     }
     message.linear.x = 0.0;
     publisher -> publish(message);
+    
+     while(rclcpp::ok() && angle_dist(ini_position["angle"],pos["angle"]) <= M_PI/2){
+     	message.angular.z = 0.2;
+     	publisher -> publish(message);
+     	rclcpp::spin_some(node);
+     
+     }
+     message.angular.z = 0.0;
+     publisher -> publish(message);
+    
     
     //rclcpp::spin(node); //importante 
     rclcpp::shutdown(); 
