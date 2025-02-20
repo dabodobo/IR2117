@@ -18,21 +18,17 @@ std::map<std::string,float> position;
 bool first_read = true;
 
 void topic_callback(const nav_msgs::msg::Odometry msg){
-	/*if (fisrt_read){
-	    position["x"] = msg.pose.pose.position.x;
-	    position["y"] = msg.pose.pose.position.y;
-	}
-	*/
-	
-	position["x"] = msg.pose.pose.position.x;
-	position["y"] = msg.pose.pose.position.y;
-	
 	float angle_x = msg.pose.pose.orientation.x;
 	float angle_y = msg.pose.pose.orientation.y;
 	float angle_z = msg.pose.pose.orientation.z;
 	float angle_w = msg.pose.pose.orientation.w;
+	if (first_read){
+	    position["x"] = msg.pose.pose.position.x;
+	    position["y"] = msg.pose.pose.position.y;
+	    position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
+	}
+	first_read = false;
 	
-	position["angle"] = quat(angle_x,angle_y,angle_z,angle_w);
 	 
 	std::cout << "Position x: " << position["x"] << std:: endl;
 	std::cout << "Position y: " << position["y"] << std:: endl;
