@@ -19,7 +19,7 @@ float dist(float base_x,float base_y, float x, float y){
 	return sqrt(dist_x*dist_x + dist_y*dist_y);
 }
 float angle_dist(float base_angle, float current){
-	float angle_dist(float base_angle, float current) {
+	
 	    float dist = current - base_angle;
 	    
 	    // Normalizar la diferencia al rango [-π, π]
