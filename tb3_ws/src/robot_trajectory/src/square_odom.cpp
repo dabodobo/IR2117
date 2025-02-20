@@ -18,11 +18,21 @@ float dist(float base_x,float base_y, float x, float y){
 	float dist_y = y - base_y;
 	return sqrt(dist_x*dist_x + dist_y*dist_y);
 }
-/*
 float angle_dist(float base_angle, float current){
-	fl
+	float angle_dist(float base_angle, float current) {
+	    float dist = current - base_angle;
+	    
+	    // Normalizar la diferencia al rango [-π, π]
+	    if (dist > M_PI) {
+		dist -= 2 * M_PI;  // Si es mayor que π, restamos 2π
+	    } else if (dist < -M_PI) {
+		dist += 2 * M_PI;  // Si es menor que -π, sumamos 2π
+	    }
+
+	    return dist;
+	}
 }
-*/
+
 using namespace std::chrono_literals;
 //std::shared_ptr<rclcpp::Publisher<std_msgs::msg::String>> publisher
 std::map<std::string,float> position;
@@ -46,7 +56,8 @@ void topic_callback(const nav_msgs::msg::Odometry msg){
 	std::cout << "Position x: " << x << std:: endl;
 	std::cout << "Position y: " << y << std:: endl;
 	std::cout << "Angle : " << angle << std::endl;
-	std::cout << "Distance : " << dist(position["x"],position["y"],x,y) << std::endl;;
+	std::cout << "Distance : " << dist(position["x"],position["y"],x,y) << std::endl;
+	std::cout << "Dif angle: " << angle_dist(position["angle"],angle) << std::endl;
 	std::cout << "- - - - - - - - - - - " << std::endl << std::endl;
 	
 }
