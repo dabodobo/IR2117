@@ -33,7 +33,7 @@ float angle_dist(float base_angle, float current){
 	
 }
 
-//using namespace std::chrono_literals;
+using namespace std::chrono_literals;
 
 
 std::map<std::string,float> ini_position;
@@ -86,27 +86,46 @@ int main(int argc, char *argv[]) {
     auto subscription = node->create_subscription<nav_msgs::msg::Odometry>("odom", 10, topic_callback); //creo la suscripcion a odom y hago call_back
     auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
     
+    rclcpp::WallRate loop_rate(10ms);
     geometry_msgs::msg::Twist message;
     
-    while(rclcpp::ok() && dist(ini_position["x"],ini_position["y"],pos["x"],pos["y"]) < 1){
+    for(int i = 0; i < 4; i++){
+    
+    first_read = true;
+    
+    while(rclcpp::ok() &&  dist(ini_position["x"],ini_position["y"],pos["x"],pos["y"]) < 1){
     	message.linear.x = 0.3;
     	publisher -> publish(message);
     	rclcpp::spin_some(node);
     }
+    first_read = true;
     message.linear.x = 0.0;
     publisher -> publish(message);
+    loop_rate.sleep(); 
+      
     
-     while(rclcpp::ok() && angle_dist(ini_position["angle"],pos["angle"]) <= M_PI/2){
-     	message.angular.z = 0.2;
+    
+     while(rclcpp::ok() && angle_dist(ini_position["angle"],pos["angle"]) < M_PI/2){
+     	message.angular.z = 0.1;
      	publisher -> publish(message);
      	rclcpp::spin_some(node);
+     	
      
      }
+     
+     first_read = true;
      message.angular.z = 0.0;
      publisher -> publish(message);
+     loop_rate.sleep(); 
+    
+ 
+    
+    
     
     
     //rclcpp::spin(node); //importante 
+    
+    }
     rclcpp::shutdown(); 
     return 0;
 }
