@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(suma)
+project(stats)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -20,24 +20,22 @@ if(BUILD_TESTING)
   # comment the line when this package is in a git repo and when
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
   
   find_package(rclcpp REQUIRED)
   find_package(std_msgs REQUIRED)
   
-  add_executable(sum src/sumador.cpp)
-  add_executable(pub src/publisher.cpp)
+  add_executable(mean src/mean.cpp)
+
   
-  ament_target_dependencies(sum rclcpp std_msgs)
-  ament_target_dependencies(pub rclcpp std_msgs)
+  ament_target_dependencies(mean rclcpp std_msgs)
+
   
   install(TARGETS
-  	sum
-  	pub
+  	mean
   	DESTINATION lib/${PROJECT_NAME}
   
   )
-  
+  ament_lint_auto_find_test_dependencies()
 endif()
 
 ament_package()
