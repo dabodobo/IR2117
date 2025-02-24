@@ -30,11 +30,15 @@ if(BUILD_TESTING)
 	
 	add_executable(max src/max.cpp)
 	ament_target_dependencies(max rclcpp std_msgs)
+	
+	add_executable(minmax src/minmax.cpp)
+	ament_target_dependencies(minmax rclcpp std_msgs)
 
 
 	install(TARGETS
 		min
 		max
+		minmax
 		DESTINATION lib/${PROJECT_NAME}
 
 	)
