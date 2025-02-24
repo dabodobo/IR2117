@@ -21,6 +21,20 @@ if(BUILD_TESTING)
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
+  
+	find_package(rclcpp REQUIRED)
+	find_package(std_msgs REQUIRED)
+
+	add_executable(minmax src/minmax.cpp)
+	ament_target_dependencies(minmax rclcpp std_msgs)
+
+
+	install(TARGETS
+		minmax
+		DESTINATION lib/${PROJECT_NAME}
+
+	)
+
 endif()
 
 ament_package()
