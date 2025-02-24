@@ -9,9 +9,17 @@ bool first_read = true;
 std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Int32>> publisher;
 
 void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){ 
-	
     value = msg->data;
-    std::cout << value;
+    if(first_read){
+    	min = value;
+    	first_read = false;
+    }
+    if(value < min){
+    	min = value;
+    }
+    
+    std::cout << "El valor es: "<< value << std::endl;
+    std::cout << "El mínimo es: " << min << std::endl;
     //std_msgs::msg::Int32 out_msg;
 
     //out_msg.data = value
