@@ -25,12 +25,12 @@ if(BUILD_TESTING)
 	find_package(rclcpp REQUIRED)
 	find_package(std_msgs REQUIRED)
 
-	add_executable(minmax src/minmax.cpp)
-	ament_target_dependencies(minmax rclcpp std_msgs)
+	add_executable(min src/min.cpp)
+	ament_target_dependencies(min rclcpp std_msgs)
 
 
 	install(TARGETS
-		minmax
+		min
 		DESTINATION lib/${PROJECT_NAME}
 
 	)

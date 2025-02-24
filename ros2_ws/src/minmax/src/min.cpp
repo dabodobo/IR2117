@@ -3,7 +3,6 @@
 #include <iostream>
 
 int min;
-int max;
 int value;
 bool first_read = true;
 std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Int32>> publisher;
@@ -20,10 +19,10 @@ void topic_callback(const std_msgs::msg::Int32::SharedPtr msg){
     
     std::cout << "El valor es: "<< value << std::endl;
     std::cout << "El mínimo es: " << min << std::endl;
-    //std_msgs::msg::Int32 out_msg;
-
-    //out_msg.data = value
-    //publisher->publish(out_msg);
+    
+    std_msgs::msg::Int32 out_msg;
+    out_msg.data = min;
+    publisher->publish(out_msg);
 }
 
 int main(int argc, char * argv[]){
@@ -32,7 +31,7 @@ int main(int argc, char * argv[]){
     auto subscription = 
         node->create_subscription<std_msgs::msg::Int32>(
             "number", 10, topic_callback); //me suscribo a topic
-    publisher = node->create_publisher<std_msgs::msg::Int32>("x", 10); //publico la media
+    publisher = node->create_publisher<std_msgs::msg::Int32>("min", 10); 
 
     rclcpp::spin(node); 
     rclcpp::shutdown();
