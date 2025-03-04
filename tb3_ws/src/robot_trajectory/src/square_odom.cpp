@@ -88,27 +88,31 @@ int main(int argc, char *argv[]) {
     
     rclcpp::WallRate loop_rate(10ms);
     geometry_msgs::msg::Twist message;
+    std::cout << "Empiezo !! " << std::endl;
     
     for(int i = 0; i < 4; i++){
     
     first_read = true;
-    
+    std::cout << "Avanzo !! " << std::endl  << std::endl;
     while(rclcpp::ok() &&  dist(ini_position["x"],ini_position["y"],pos["x"],pos["y"]) < 1){
-    	message.linear.x = 0.3;
+    	message.linear.x = 0.1;
     	publisher -> publish(message);
     	rclcpp::spin_some(node);
+    	loop_rate.sleep(); 
+    	
     }
     first_read = true;
     message.linear.x = 0.0;
     publisher -> publish(message);
-    loop_rate.sleep(); 
+    
       
     
-    
+    std::cout << "Giro !! " << std::endl  << std::endl;
      while(rclcpp::ok() && angle_dist(ini_position["angle"],pos["angle"]) < M_PI/2){
-     	message.angular.z = 0.1;
+     	message.angular.z = 0.13;
      	publisher -> publish(message);
      	rclcpp::spin_some(node);
+     	loop_rate.sleep(); 
      	
      
      }
@@ -116,15 +120,16 @@ int main(int argc, char *argv[]) {
      first_read = true;
      message.angular.z = 0.0;
      publisher -> publish(message);
-     loop_rate.sleep(); 
+     
+
+    rclcpp::spin_some(node);
     
- 
-    
-    
-    
-    
-    //rclcpp::spin(node); //importante 
-    
+    }
+    message.angular.z = 0.0;
+    for(int i = 0; i < 100;i++){
+    	 publisher -> publish(message);
+    	 rclcpp::spin_some(node);
+    	 loop_rate.sleep(); 
     }
     rclcpp::shutdown(); 
     return 0;
