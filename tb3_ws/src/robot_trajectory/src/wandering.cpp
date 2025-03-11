@@ -6,17 +6,18 @@
 #include <cmath>
 
 
-std::vector<int> data = {0,90,180,270};
+
 using namespace std::chrono_literals;
 
 float min_distance = 0.5;
-
+std::vector<int> data = {0,90,180,270};
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
 	for (float i : data){
-		std::cout<< "[" << i << "] = " << sensor.ranges[i] <<  std::endl;	
+		std::cout<< "[" << i << "] = " << sensor.ranges[i] << "  - -   ";
 	}
+	std::cout << std::endl;
 
 
 }
