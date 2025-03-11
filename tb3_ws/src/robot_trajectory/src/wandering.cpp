@@ -10,14 +10,24 @@
 using namespace std::chrono_literals;
 
 float min_distance = 0.5;
-std::vector<int> data = {0,90,180,270};
+//std::vector<int> data = {0,90,180,270};
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
-	for (float i : data){
-		std::cout<< "[" << i << "] = " << sensor.ranges[i] << "  - -   ";
+	std::cout<<"[ ";
+	for (int i = 0; i < 360; i++){
+		if(i < 10){
+			std::cout << std::round(sensor.ranges[i]*100)/100 << " ";
+		}
+		else if(i == 10){
+			std::cout << "]" <<std::endl << "[ ";
+		}
+		
+		else if(350 <= i ){
+			std::cout << std::round(sensor.ranges[i]*100)/100 << " ";
+		}
 	}
-	std::cout << std::endl;
+	std::cout << "]" << std::endl <<std::endl;
 
 
 }
