@@ -1,23 +1,49 @@
-#include <chrono>  
-#include "rclcpp/rclcpp.hpp" //librería de ros
-#include "std_msgs/msg/string.hpp" //describe los mensajes de tipo string
+#include "rclcpp/rclcpp.hpp" 
+#include "geometry_msgs/msg/twist" 
+#include "sensor_msgs/msg/laserscan"
+#include <chrono>
+#include "cmath"
+
+
 using namespace std::chrono_literals;
-int main(int argc, char * argv[]){
-	rclcpp::init(argc,argv); // imprescindible para inicializar (conectar) ros
-	auto node = rclcpp::Node::make_shared("publisher"); //crea el nodo (puntero) y le pone el nombre siempre al principio del código.
-	auto publisher = node->create_publisher<std_msgs::msg::String>("topic",10); // <> plantilla donde me marca el tipo del elemento, creación del topic.
-	std_msgs::msg::String message; //variable de mensaje
-	auto publish_count = 0;
-	rclcpp::WallRate loop_rate(500ms);
+
+float min_distance = 0.5
+
+void girar(const geometry_msgs::msg::Twist msg){
 	
-	while(rclcpp::ok()){ //Se le pregunta a ros si está todo bien, es lo mismo que while true
-		message.data = "Hello, world! " + std::to_string(publish_count++); //Creación del mensaje
-		publisher->publish(message); // se envía el mensaje
-		rclcpp::spin_some(node); //espera a hasta que se asegura que se ha enviado el topico
-		loop_rate.sleep(); // tiempo de espera.
+}
+
+void collision(const sensor_msgs::msg::LaserScan& msg){
+	for (float i : msg.ranges){
+		if(i < min_distance){
+			vel.angular.z 
+		}
+	}
+
+
+}
+int main(int argc, char * argv[]){
+	rclcpp::init(argc,argv); 
+	auto node = rclcpp::Node::make_shared("sensor_node"); 
+	auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10); 
+	auto subscriber = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",)
+	
+	geometry_msgs::msg::Twist vel;
+	sensor_msgs::msg::LaserScan sensor;
+	
+	sensor.angle_min = (1/4) * M_PI;
+	sensor.angle_max = (3/4) * M_PI;
+	
+	
+	while(rclcpp::ok()){ 
+		vel.linear.x = 0.1;
+		publisher->publish(vel);
+		spin_some(node);
+		loop_rate.sleep();
+		
 	
 	}
-	rclcpp::shutdown(); // siempre al final de terminar el main para cerrar el nodo
+	rclcpp::shutdown();
 	return 0;
 
 
