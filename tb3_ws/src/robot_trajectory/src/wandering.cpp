@@ -14,20 +14,29 @@ float min_distance = 0.5;
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
-	std::cout<<"[ ";
-	for (int i = 0; i < 360; i++){
-		if(i < 10){
-			std::cout << std::round(sensor.ranges[i]*100)/100 << " ";
+	std::vector<float> vec1;
+	float min1 = sensor.ranges[0];
+	
+	for(int i = 0; i < 10; i++){
+		if (sensor.ranges[i] < min1){
+			min1 = sensor.ranges[i];
 		}
-		else if(i == 10){
-			std::cout << "]" <<std::endl << "[ ";
-		}
-		
-		else if(350 <= i ){
-			std::cout << std::round(sensor.ranges[i]*100)/100 << " ";
-		}
+		vec1.push_back(sensor.ranges[i]);
 	}
-	std::cout << "]" << std::endl <<std::endl;
+	std::vector<float> vec2;
+	float min2 = sensor.ranges[350];
+	
+	for(int i = 350; i < 360; i++){
+		if (sensor.ranges[i] < min2){
+			min2 = sensor.ranges[i];
+		}
+		vec1.push_back(sensor.ranges[i]);
+	}
+	
+	float min = min1 < min2? min1:min2;
+	std::cout<< "El mínimo es: " << min << std::endl; 
+	
+	
 
 
 }
