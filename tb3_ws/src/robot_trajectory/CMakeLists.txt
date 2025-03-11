@@ -40,7 +40,7 @@ add_executable(square_odom src/square_odom.cpp)
 ament_target_dependencies(square_odom rclcpp geometry_msgs nav_msgs)
 
 
-add_executable(wandering src/wandering)
+add_executable(wandering src/wandering.cpp)
 ament_target_dependencies(wandering rclcpp geometry_msgs sensor_msgs)
 
 install(TARGETS

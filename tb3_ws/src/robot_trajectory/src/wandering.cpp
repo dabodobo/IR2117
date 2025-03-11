@@ -1,40 +1,38 @@
 #include "rclcpp/rclcpp.hpp" 
-#include "geometry_msgs/msg/twist" 
-#include "sensor_msgs/msg/laserscan"
+#include "geometry_msgs/msg/twist.hpp" 
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include <vector>
 #include <chrono>
-#include "cmath"
+#include <cmath>
 
 
+std::vector<int> data = {0,90,180,270};
 using namespace std::chrono_literals;
 
-float min_distance = 0.5
+float min_distance = 0.5;
 
-void girar(const geometry_msgs::msg::Twist msg){
-	
-}
 
-void collision(const sensor_msgs::msg::LaserScan& msg){
-	for (float i : msg.ranges){
-		if(i < min_distance){
-			vel.angular.z 
-		}
+
+void callback(const sensor_msgs::msg::LaserScan& sensor){
+	for (float i : data){
+		std::cout<< "[" << i << "] = " << sensor.ranges[i] <<  std::endl;	
 	}
 
 
 }
+
 int main(int argc, char * argv[]){
 	rclcpp::init(argc,argv); 
 	auto node = rclcpp::Node::make_shared("sensor_node"); 
 	auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10); 
-	auto subscriber = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",);
+	auto subscriber = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",10,callback);
 	
 	rclcpp::WallRate loop_rate(10ms);
 	
 	geometry_msgs::msg::Twist vel;
-	sensor_msgs::msg::LaserScan sensor;
 	
-	sensor.angle_min = (1/4) * M_PI;
-	sensor.angle_max = (3/4) * M_PI;
+	
+	
 	
 	
 	while(rclcpp::ok()){ 
