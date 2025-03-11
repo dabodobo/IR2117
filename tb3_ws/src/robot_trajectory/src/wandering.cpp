@@ -26,7 +26,9 @@ int main(int argc, char * argv[]){
 	rclcpp::init(argc,argv); 
 	auto node = rclcpp::Node::make_shared("sensor_node"); 
 	auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10); 
-	auto subscriber = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",)
+	auto subscriber = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",);
+	
+	rclcpp::WallRate loop_rate(10ms);
 	
 	geometry_msgs::msg::Twist vel;
 	sensor_msgs::msg::LaserScan sensor;
