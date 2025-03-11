@@ -9,36 +9,24 @@
 
 using namespace std::chrono_literals;
 
-float min_distance = 0.5;
-//std::vector<int> data = {0,90,180,270};
+float min_distance = 1.0;
+float min;
+
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
 	std::vector<float> vec1;
-	float min1 = sensor.ranges[0];
+	min = sensor.ranges[0];
 	
-	for(int i = 0; i < 10; i++){
-		if (sensor.ranges[i] < min1){
-			min1 = sensor.ranges[i];
-		}
-		vec1.push_back(sensor.ranges[i]);
-	}
-	std::vector<float> vec2;
-	float min2 = sensor.ranges[350];
+	for(int i = 45; i < 135; i++){
 	
-	for(int i = 350; i < 360; i++){
-		if (sensor.ranges[i] < min2){
-			min2 = sensor.ranges[i];
+		if (sensor.ranges[i] < min){
+		
+			min = sensor.ranges[i];
 		}
-		vec1.push_back(sensor.ranges[i]);
+
 	}
 	
-	float min = min1 < min2? min1:min2;
-	std::cout<< "El mínimo es: " << min << std::endl; 
-	
-	
-
-
 }
 
 int main(int argc, char * argv[]){
@@ -52,13 +40,10 @@ int main(int argc, char * argv[]){
 	geometry_msgs::msg::Twist vel;
 	
 	
-	
-	
-	
 	while(rclcpp::ok()){ 
-		vel.linear.x = 0.1;
+		vel.linear.x = min > min_distance ? 1.0 : 0.0;
 		publisher->publish(vel);
-		spin_some(node);
+		rclcpp::spin_some(node);
 		loop_rate.sleep();
 		
 	
