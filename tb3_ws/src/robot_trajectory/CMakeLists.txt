@@ -27,6 +27,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 add_executable(publisher src/square.cpp)
 ament_target_dependencies(publisher rclcpp geometry_msgs)
@@ -38,10 +39,15 @@ ament_target_dependencies(turtle_square rclcpp geometry_msgs)
 add_executable(square_odom src/square_odom.cpp)
 ament_target_dependencies(square_odom rclcpp geometry_msgs nav_msgs)
 
+
+add_executable(wandering src/wandering)
+ament_target_dependencies(wandering rclcpp geometry_msgs sensor_msgs)
+
 install(TARGETS
 	square_odom
 	turtle_square
 	publisher
+	wandering
 	DESTINATION lib/${PROJECT_NAME}
 
 )
