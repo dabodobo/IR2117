@@ -17,16 +17,30 @@ float min;
 void callback(const sensor_msgs::msg::LaserScan& sensor){
 	std::vector<float> vec1;
 	min = sensor.ranges[0];
+	float cam;
 	
 	for(int i = 45; i < 135; i++){
 	
 		if (sensor.ranges[i] < min){
 		
 			min = sensor.ranges[i];
+			cam = i;
 		}
 
 	}
+	//std::cout << sensor.ranges[0] << "/ " << sensor.ranges[90] << "/ " << sensor.ranges[180] << "/ " << sensor.ranges[270] << std::endl;
+	std::cout << min << " -- " << cam << std::endl;
 	
+}
+
+void avanzar (geometry_msgs::msg::Twist& vel){
+	vel.linear.x = 0.1;
+	vel.angular.z = 0.0;
+}
+
+void girar_izq(geometry_msgs::msg::Twist& vel){
+	vel.linear.x = 0.0;
+	vel.angular.z = 0.1;
 }
 
 int main(int argc, char * argv[]){
@@ -41,7 +55,12 @@ int main(int argc, char * argv[]){
 	
 	
 	while(rclcpp::ok()){ 
-		vel.linear.x = min > min_distance ? 1.0 : 0.0;
+		if(min > min_distance){
+			avanzar(vel);
+		}
+		else{
+			girar_izq(vel);
+		}
 		publisher->publish(vel);
 		rclcpp::spin_some(node);
 		loop_rate.sleep();
