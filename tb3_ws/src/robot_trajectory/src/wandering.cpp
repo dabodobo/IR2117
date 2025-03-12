@@ -11,25 +11,46 @@ using namespace std::chrono_literals;
 
 float min_distance = 1.0;
 float min;
+float min_izq;
+float min_der;
 
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
-	std::vector<float> vec1;
 	min = sensor.ranges[0];
-	float cam;
 	
 	for(int i = 45; i < 135; i++){
 	
 		if (sensor.ranges[i] < min){
 		
 			min = sensor.ranges[i];
-			cam = i;
 		}
 
 	}
-	//std::cout << sensor.ranges[0] << "/ " << sensor.ranges[90] << "/ " << sensor.ranges[180] << "/ " << sensor.ranges[270] << std::endl;
-	std::cout << min << " -- " << cam << std::endl;
+	
+
+	min_izq = sensor.ranges[0];
+	for(int i = 0; i < 10; i++){
+
+		if (sensor.ranges[i] < min_izq){
+		
+			min_izq = sensor.ranges[i];
+		}
+
+	}
+
+	min_der = sensor.ranges[350];
+
+	for(int i = 350; i < 360; i++){
+		if (sensor.ranges[i] < min_der){
+
+			min_der = sensor.ranges[i];
+
+		}
+
+	}
+	std::cout << "[0..9]: " <<min_izq << " // [350,359]" << min_der << " // min::  " << min <<  std::endl; 
+	
 	
 }
 
@@ -41,6 +62,11 @@ void avanzar (geometry_msgs::msg::Twist& vel){
 void girar_izq(geometry_msgs::msg::Twist& vel){
 	vel.linear.x = 0.0;
 	vel.angular.z = 0.1;
+}
+
+void girar_der(geometry_msgs::msg::Twist& vel){
+	vel.linear.x = 0.0;
+	vel.angular.z = -0.1;
 }
 
 int main(int argc, char * argv[]){
@@ -58,9 +84,13 @@ int main(int argc, char * argv[]){
 		if(min > min_distance){
 			avanzar(vel);
 		}
-		else{
+		else if (min_izq > min_der){
 			girar_izq(vel);
 		}
+		else {
+			girar_der(vel);
+		}
+		
 		publisher->publish(vel);
 		rclcpp::spin_some(node);
 		loop_rate.sleep();
