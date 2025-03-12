@@ -9,17 +9,27 @@
 
 using namespace std::chrono_literals;
 
-float min_distance = 1.0;
+float min_distance = 0.5;
 float min;
 float min_izq;
 float min_der;
+bool turn_left = false;
+bool turn_right = false;
 
 
 
 void callback(const sensor_msgs::msg::LaserScan& sensor){
 	min = sensor.ranges[0];
 	
-	for(int i = 45; i < 135; i++){
+	for(int i = 0; i < 45; i++){
+	
+		if (sensor.ranges[i] < min){
+		
+			min = sensor.ranges[i];
+		}
+
+	}
+	for(int i = 315; i < 359; i++){
 	
 		if (sensor.ranges[i] < min){
 		
@@ -81,15 +91,34 @@ int main(int argc, char * argv[]){
 	
 	
 	while(rclcpp::ok()){ 
-		if(min > min_distance){
+		if(turn_left == false && turn_right == false){
 			avanzar(vel);
+			if(min < min_distance){
+				if(min_izq > min_der){
+					turn_left = true;
+				}
+				else{
+					turn_right = true;
+				}
+			}
 		}
-		else if (min_izq > min_der){
+		
+		if (turn_left){
 			girar_izq(vel);
+			
+			if(min > min_distance){
+				turn_left = false;
+			}
 		}
-		else {
+		
+		if (turn_right){
 			girar_der(vel);
+			
+			if(min > min_distance){
+				turn_right = false;
+			}
 		}
+		
 		
 		publisher->publish(vel);
 		rclcpp::spin_some(node);
