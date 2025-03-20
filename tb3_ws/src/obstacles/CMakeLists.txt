@@ -31,7 +31,7 @@ if(BUILD_TESTING)
   
   install(TARGETS
   	detector
-  	destination lib/${PROJECT_NAME}
+  	DESTINATION lib/${PROJECT_NAME}
   )
   
 endif()
