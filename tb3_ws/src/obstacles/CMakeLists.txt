@@ -33,6 +33,12 @@ if(BUILD_TESTING)
   	detector
   	DESTINATION lib/${PROJECT_NAME}
   )
+  install(DIRECTORY launch
+  
+  	DESTINATION share/${PROJECT_NAME}
+  
+  
+  )
   
 endif()
 
