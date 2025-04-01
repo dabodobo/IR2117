@@ -25,12 +25,17 @@ if(BUILD_TESTING)
   find_package(rclcpp REQUIRED)
   find_package(sensor_msgs REQUIRED)
   find_package(example_interfaces REQUIRED)
+  find_package(geometry_msgs REQUIRED)
   
   add_executable(detector src/detector.cpp)
   ament_target_dependencies(detector rclcpp sensor_msgs example_interfaces)
   
+  add_executable(avoidance src/avoidance.cpp)
+  ament_targe_dependencies(avoidance rclcpp geometry_msgs example_interfaces)
+  
   install(TARGETS
   	detector
+  	avoidance
   	DESTINATION lib/${PROJECT_NAME}
   )
   install(DIRECTORY launch
