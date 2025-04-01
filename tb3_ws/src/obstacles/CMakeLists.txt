@@ -31,7 +31,7 @@ if(BUILD_TESTING)
   ament_target_dependencies(detector rclcpp sensor_msgs example_interfaces)
   
   add_executable(avoidance src/avoidance.cpp)
-  ament_targe_dependencies(avoidance rclcpp geometry_msgs example_interfaces)
+  ament_target_dependencies(avoidance rclcpp geometry_msgs example_interfaces)
   
   install(TARGETS
   	detector
