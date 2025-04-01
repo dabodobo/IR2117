@@ -65,9 +65,9 @@ int main(int argc, char* argv[]){
 	auto node = rclcpp::Node::make_shared("avoidance");
 	auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("cmd_vel",10);
 	
-	auto subs_front = node -> create_subscription<example_interfaces::msg::Bool>("/front/obstacle)",10,callback_front);
-	auto subs_left = node -> create_subscription<example_interfaces::msg::Bool>("/left/obstacle)",10,callback_front);
-	auto subs_right = node -> create_subscription<example_interfaces::msg::Bool>("/right/obstacle)",10,callback_front);
+	auto subs_front = node -> create_subscription<example_interfaces::msg::Bool>("/front/obstacle",10,callback_front);
+	auto subs_left = node -> create_subscription<example_interfaces::msg::Bool>("/left/obstacle",10,callback_front);
+	auto subs_right = node -> create_subscription<example_interfaces::msg::Bool>("/right/obstacle",10,callback_front);
 	geometry_msgs::msg::Twist vel;
 	rclcpp::WallRate loop_rate(50ms);
 	
