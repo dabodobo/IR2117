@@ -21,7 +21,7 @@ def generate_launch_description():
 		namespace='left',
 		parameters=[
 			{"obs_angle_min": 2.3256},
-			{"obs_angle_max": 1.},
+			{"obs_angle_max": 2.7489},
 			{"obs_threshold": 0.5}]
 	),
 	
@@ -30,8 +30,8 @@ def generate_launch_description():
 		executable='detector',
 		namespace='right',
 		parameters=[
-			{"obs_angle_min": -1.1781},
-			{"obs_angle_max": -0.3927},
+			{"obs_angle_min": 3.5343},
+			{"obs_angle_max": 4.3197},
 			{"obs_threshold": 0.5}]
 	),
 	
