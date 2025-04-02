@@ -12,7 +12,7 @@ def generate_launch_description():
 		parameters=[
 			{"obs_angle_min": 2.7489},
 			{"obs_angle_max": 3.5343},
-			{"obs_threshold": 0.5}]
+			{"obs_threshold": 1.0}]
 	),
 	
 	Node(
@@ -22,7 +22,7 @@ def generate_launch_description():
 		parameters=[
 			{"obs_angle_min": 2.3256},
 			{"obs_angle_max": 2.7489},
-			{"obs_threshold": 0.5}]
+			{"obs_threshold": 1.0}]
 	),
 	
 	Node(
@@ -32,7 +32,7 @@ def generate_launch_description():
 		parameters=[
 			{"obs_angle_min": 3.5343},
 			{"obs_angle_max": 4.3197},
-			{"obs_threshold": 0.5}]
+			{"obs_threshold": 1.0}]
 	),
 	
 	Node(
