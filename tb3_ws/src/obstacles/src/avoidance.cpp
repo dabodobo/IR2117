@@ -62,8 +62,9 @@ void random_choice(geometry_msgs::msg::Twist& vel){
 int main(int argc, char* argv[]){
 
 	rclcpp::init(argc,argv);
+	
 	auto node = rclcpp::Node::make_shared("avoidance");
-	auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("cmd_vel",10);
+	auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
 	
 	auto subs_front = node -> create_subscription<example_interfaces::msg::Bool>("/front/obstacle",10,callback_front);
 	auto subs_left = node -> create_subscription<example_interfaces::msg::Bool>("/left/obstacle",10,callback_left);

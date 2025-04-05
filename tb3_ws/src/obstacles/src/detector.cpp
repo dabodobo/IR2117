@@ -25,8 +25,10 @@ void topic_callback(const sensor_msgs::msg::LaserScan& sensor){
 
 int main(int argc, char * argv[]){
 	rclcpp::init(argc,argv);
+        rclcpp::QoS qos_profile(10);
+        qos_profile.best_effort(); 
 	auto node = rclcpp::Node::make_shared("detector");
-	auto subscription = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",10,topic_callback); 
+	auto subscription = node->create_subscription<sensor_msgs::msg::LaserScan>("/scan",qos_profile,topic_callback); 
 	publisher = node -> create_publisher<example_interfaces::msg::Bool>("obstacle",10);
 	
 	node -> declare_parameter("obs_angle_min", -M_PI/8);
