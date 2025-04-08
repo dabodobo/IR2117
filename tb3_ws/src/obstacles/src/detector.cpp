@@ -13,7 +13,7 @@ void topic_callback(const sensor_msgs::msg::LaserScan& sensor){
 	for (float range : sensor.ranges){
 		if(angle > M_PI) angle -= 2*M_PI;
 		if((angle >= obs_angle_min) && (angle <= obs_angle_max)){
-			if(range <= obs_threshold)
+			if(range > 0.1 && range <= obs_threshold)
 				msg.data = true;
 		}
 		angle += sensor.angle_increment;
