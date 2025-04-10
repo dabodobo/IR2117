@@ -3,7 +3,7 @@
 #include "std_msgs/msg/string.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "turtlesim/srv/set_pen.hpp"
-
+#include "turtlesim/srv/teleport_absolute.hpp"
 
 float lin_vel = 1.0;
 
@@ -13,11 +13,13 @@ int main(int argc, char * argv[])
  rclcpp::init(argc, argv);
  
  // --- ¿Numero de argumentos correctos? ---
- if(argc != 4 ){
-    RCLCPP_INFO(rclcpp::get_logger("args"), "uso: rings int_rojo int_verde int_azul"); // es el nombre del mensaje
+ 
+ if(argc != 6 ){
+    RCLCPP_INFO(rclcpp::get_logger("args"), "uso: rings int_rojo int_verde int_azul x y"); // es el nombre del mensaje
     return 1;
  }
  
+ // -----------------------------------------
  
  auto node = rclcpp::Node::make_shared("rings");
  
@@ -30,15 +32,15 @@ int main(int argc, char * argv[])
  // Cliente color -----------------------
  
  rclcpp::Client<turtlesim::srv::SetPen>::SharedPtr client = node -> create_client<turtlesim::srv::SetPen>("turtle1/set_pen"); 
- auto request = std::make_shared<turtlesim::srv::SetPen::Request>();
+ auto color_pen = std::make_shared<turtlesim::srv::SetPen::Request>();
  
-  request->r = atoll(argv[1]); // atoll cambia de string a int
-  request->g = atoll(argv[2]); // atoll cambia de string a int
-  request->b = atoll(argv[3]); // atoll cambia de string a int
-  request->width = 3;
-  request->off = 0;
+  color_pen->r = atoll(argv[1]); // atoll cambia de string a int
+  color_pen->g = atoll(argv[2]); // atoll cambia de string a int
+  color_pen->b = atoll(argv[3]); // atoll cambia de string a int
+  color_pen->width = 3;
+  color_pen->off = 0;
  
-  auto result = client->async_send_request(request);
+  auto result = client->async_send_request(color_pen);
   
   if (rclcpp::spin_until_future_complete(node,result) == rclcpp::FutureReturnCode::SUCCESS)
   {
@@ -50,6 +52,30 @@ int main(int argc, char * argv[])
   }
   
   // --------------------------------------
+  
+  // Cliente teleporting
+  
+  rclcpp::Client<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_client = node -> create_client<turtlesim::srv::TeleportAbsolute>("turtle1/teleport_absolute");
+  auto teleport = std::make_shared<turtlesim::srv::TeleportAbsolute::Request>();
+ 
+  teleport->x = atoll(argv[4]); // atoll cambia de string a int
+  teleport->y = atoll(argv[5]); // atoll cambia de string a int
+  teleport->theta = 0;
+  
+ 
+  auto result_teleport = teleport_client->async_send_request(teleport);
+  
+  if (rclcpp::spin_until_future_complete(node,result_teleport) == rclcpp::FutureReturnCode::SUCCESS)
+  {
+    RCLCPP_INFO(rclcpp::get_logger("teleport"), 
+     "Teleportado con éxito");
+  } else {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), 
+     "Ha habido un error al llamar al servicio de teleport");
+  }
+  //Esto se puede optimizar con una función.
+  // --------------------------------------
+  
   
  geometry_msgs::msg::Twist vel;
  while (rclcpp::ok()) {
