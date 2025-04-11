@@ -12,8 +12,9 @@ using namespace std::chrono_literals;
 
 
 // --- VARIABLES GLOBALES ----------
-float lin_vel = 1.0;
-bool apagar = true;
+float lin_vel = 1.0; // velocidad lineal
+bool apagar = true; // apagar el pen
+//diccionario con los colores
 std::map<std::string, std::vector<int>> pen = {
   {"apagar",{0,0,0} },
   {"rojo",{255,0,0}},
@@ -23,13 +24,15 @@ std::map<std::string, std::vector<int>> pen = {
   {"negro",{0,0,0}}
   
 };
-std::vector<std::pair<float,float>> pos = {{3.25,5.5},{5.5,5.5},{7.75,5.5},{4.35,4.5},{6.65,4.5}};
-std::vector<std::string> colores = {"azul","negro","rojo","amarillo","verde"};
+std::vector<std::pair<float,float>> pos = {{3.25,5.5},{5.5,5.5},{7.75,5.5},{4.35,4.5},{6.65,4.5}}; // orden de los tp's
+std::vector<std::string> colores = {"azul","negro","rojo","amarillo","verde"}; // orden de los colores
 
-geometry_msgs::msg::Twist vel;
-int n = 0;
+geometry_msgs::msg::Twist vel; // twist que se publica para girar
+int n = 0; // contador del circulo
 
 // ---------------------------
+
+// llamada al servicio pen
 
 void call_pen(std::string color, rclcpp::Client<turtlesim::srv::SetPen>::SharedPtr client){
 
@@ -61,6 +64,8 @@ void call_pen(std::string color, rclcpp::Client<turtlesim::srv::SetPen>::SharedP
   
 */
 }
+
+// llamada al servicio tp
 
 void call_tp(float x, float y, rclcpp::Client<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_client){
 
@@ -102,9 +107,9 @@ int main(int argc, char * argv[])
  // -----------------------------------------
  */
  
- auto node = rclcpp::Node::make_shared("rings");
+ auto node = rclcpp::Node::make_shared("rings"); //Creación del nodo
  
- auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10);
+ auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10); // Creación del publisher
  
  
  node -> declare_parameter("radius",1.0); // necesitamos declarar previamente el parametro en el nodo antes de obtenerlo en la linea siguiente
@@ -121,12 +126,12 @@ int main(int argc, char * argv[])
   // ------------------
   
   for(int r = 0; r < 5; r++){
-    apagar = true;
+    apagar = true; // apago antes de hacer tp para que el pen no dibuje donde no quiero
     call_pen("apagar",client);
-    call_tp(pos[r].first, pos[r].second, teleport_client);
-    apagar = false;
-    call_pen(colores[r],client);
-    std::cout << "TP: " << pos[r].first << " " << pos[r].second << std::endl;
+    call_tp(pos[r].first, pos[r].second, teleport_client); // hago tp
+    apagar = false; // enciendo el pen
+    call_pen(colores[r],client); // selecciono el color
+    std::cout << "TP: " << pos[r].first << " " << pos[r].second << std::endl; // seguidor de las posiciones
     
     while (rclcpp::ok() && n <= 10) {
    
