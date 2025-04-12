@@ -4,15 +4,15 @@
   <name>robot_trajectory</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="david.roman.grijalbo@gmail.com">david</maintainer>
+  <maintainer email="david.roman.grijalbo@gmail.com">usuario</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <build_depend>rclcpp</build_depend>
-  <build_depend>geometry_msgs</build_depend>
+  <buildtool_depend>rclcpp</buildtool_depend>
+  <buildtool_depend>geometry_msgs</buildtool_depend>
   
   <exec_depend>rclcpp</exec_depend>
-   <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

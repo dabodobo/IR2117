@@ -10,6 +10,17 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+
+add_executable(square src/square.cpp)
+ament_target_dependencies(square rclcpp geometry_msgs)
+
+install(TARGETS
+	square
+	DESTINATION lib/${PROJECT_NAME}
+
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -20,20 +31,6 @@ if(BUILD_TESTING)
   # comment the line when this package is in a git repo and when
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
-  
-  find_package(geometry_msgs REQUIRED)
-  find_package(rclcpp REQUIRED)
-  
-  add_executable(square src/square.cpp)
-  ament_target_dependencies(square rclcpp geometry_msgs)
-  
-
-  
-  install(TARGETS
-  	square
-  	DESTINATION lib/${PROJECT_NAME}
-  )  
-
   ament_lint_auto_find_test_dependencies()
 endif()
 
