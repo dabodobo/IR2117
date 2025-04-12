@@ -12,12 +12,17 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 
 add_executable(square src/square.cpp)
 ament_target_dependencies(square rclcpp geometry_msgs)
 
+add_executable(odom src/square_odom.cpp)
+ament_target_dependencies(odom rclcpp geometry_msgs nav_msgs)
+
 install(TARGETS
 	square
+	odom
 	DESTINATION lib/${PROJECT_NAME}
 
 )
