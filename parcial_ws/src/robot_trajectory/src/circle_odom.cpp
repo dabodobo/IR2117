@@ -4,6 +4,7 @@
 #include <chrono>
 #include <map>
 #include <cmath>
+#include <iostream>
 using namespace std::chrono_literals;
 std::map<std::string, float> position;
 bool first_read = true;
@@ -15,7 +16,10 @@ void dist(float x1, float x2, float y1, float y2){
   float dist_x = x1-x2;
   float dist_y = y1 -y2;
   float distance = sqrt(pow(dist_x,2)+pow(dist_y,2));
-  
+  std::cout << "dist . . .  "<< distance << std::endl;
+  if(distance < 1 ){
+    circle_completed = false;;
+  }
 
 }
 
@@ -60,13 +64,16 @@ int main (int argc, char* argv[]){
   
   geometry_msgs::msg::Twist vel;
   //&& dist(position["ini_x"],position["x"],position["ini_y"],position["y"]) > 0.1
+  std::cout << "Empiezo . . .  "<< std::endl;
   while (rclcpp::ok() && !circle_completed){
     girar(vel,radio);
     publisher -> publish(vel);
     rclcpp::spin_some(node);
     loop_rate.sleep();
     dist(position["ini_x"],position["x"],position["ini_y"],position["y"]);
+    
   }
+  std::cout << "Acabo . . . "<< std::endl;
   for(int i = 0; i < 100; i++){
     stop(vel);
     publisher -> publish(vel);
