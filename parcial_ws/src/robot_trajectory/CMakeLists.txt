@@ -20,7 +20,12 @@ ament_target_dependencies(square rclcpp geometry_msgs)
 add_executable(odom src/square_odom.cpp)
 ament_target_dependencies(odom rclcpp geometry_msgs nav_msgs)
 
+
+add_executable(circle src/circle_odom.cpp)
+ament_target_dependencies(circle rclcpp geometry_msgs nav_msgs)
+
 install(TARGETS
+	circle
 	square
 	odom
 	DESTINATION lib/${PROJECT_NAME}
