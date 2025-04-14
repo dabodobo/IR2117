@@ -30,8 +30,12 @@ if(BUILD_TESTING)
   add_executable(detector src/detector.cpp)
   ament_target_dependencies(detector rclcpp sensor_msgs example_interfaces)
   
+  add_executable(follower src/follower.cpp)
+  ament_target_dependencies(follower rclcpp sensor_msgs example_interfaces geometry_msgs)
+  
   install(TARGETS
   	detector
+  	follower
   	DESTINATION lib/${PROJECT_NAME}
   )
 endif()
