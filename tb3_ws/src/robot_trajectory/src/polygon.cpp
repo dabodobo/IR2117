@@ -4,6 +4,7 @@
 #include "cmath"
 
 using namespace std::chrono_literals;
+// PROBLEMA CON ESTE CODIGO: COMO VA MUY RAPIDO EN LA SIMULACIÓN NO HACE LA FIGURA PERFECTA
 
 int main(int argc, char *argv[]) {
     rclcpp::init(argc, argv); 
