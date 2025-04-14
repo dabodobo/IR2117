@@ -3,16 +3,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 	return LaunchDescription([
+
 		Node(
 			package= 'robot_trajectory',
-			executable = 'turtle_square',
-			remappings=[
-				('/cmd_vel', 'turtle1/cmd_vel'),
-			],
+			executable = 'polygon',
 			parameters=[
+				{"segment_size":1.25},
+				{"number_segments":6},
 				{"linear_speed":0.8},
-				{"angular_speed":1.5},
-				{"square_length":2.4}
+				{"anglular_speed":0.5}
 			]
 		)
 		
