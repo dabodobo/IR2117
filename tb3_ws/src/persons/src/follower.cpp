@@ -24,20 +24,20 @@ void callback_right(const example_interfaces::msg::Bool msg){
 }
 
 void avanzar (geometry_msgs::msg::Twist& vel){
-	vel.linear.x = 0.1;
+	vel.linear.x = 0.2;
 	vel.angular.z = 0.0;
 	//std::cout << "AVANZ0 !! " << std::endl;
 }
 
 void girar_izq(geometry_msgs::msg::Twist& vel){
 	vel.linear.x = 0.0;
-	vel.angular.z = 0.1;
+	vel.angular.z = 0.2;
 	//std::cout << "IZQUIERDA !! " << std::endl;
 }
 
 void girar_der(geometry_msgs::msg::Twist& vel){
 	vel.linear.x = 0.0;
-	vel.angular.z = -0.1;
+	vel.angular.z = -0.2;
 	//std::cout << "DERECHA !! " << std::endl;
 }
 
