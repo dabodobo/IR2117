@@ -70,10 +70,10 @@ int main(int argc, char* argv[]){
 		else if(right_person){
 			girar_der(vel);
 		}
-		else if(left_obstacle){
+		else if(left_person){
 			girar_izq(vel);
 		}
-		else(front_obstacle){
+		else{
 			stop(vel);
 		}
 		

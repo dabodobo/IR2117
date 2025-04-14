@@ -38,6 +38,12 @@ if(BUILD_TESTING)
   	follower
   	DESTINATION lib/${PROJECT_NAME}
   )
+  install(DIRECTORY launch
+  
+  	DESTINATION share/${PROJECT_NAME}
+  
+  
+  )
 endif()
 
 ament_package()
