@@ -6,20 +6,20 @@
 using namespace std::chrono_literals;
 
 
-bool front_obstacle= false, left_obstacle= false, right_obstacle = false;
+bool front_person= false, left_person= false, right_person = false;
 
 void callback_front(const example_interfaces::msg::Bool msg){
-	front_obstacle = msg.data;
+	front_person = msg.data;
 
 }
 
 void callback_left(const example_interfaces::msg::Bool msg){
-	left_obstacle = msg.data;
+	left_person = msg.data;
 
 }
 
 void callback_right(const example_interfaces::msg::Bool msg){
-	right_obstacle = msg.data;
+	right_person = msg.data;
 
 }
 
@@ -46,16 +46,7 @@ void stop(geometry_msgs::msg::Twist& vel){
 	vel.angular.z = 0.0;
 }
 
-void random_choice(geometry_msgs::msg::Twist& vel){
-	double random = std::rand();
-	if(random >= 0.5){
-		girar_izq(vel);
-	}
-	else{
-	
-		girar_der(vel);
-	}
-}
+
 
 
 
@@ -73,17 +64,17 @@ int main(int argc, char* argv[]){
 	rclcpp::WallRate loop_rate(50ms);
 	
 	while(rclcpp::ok()){
-		if(!front_obstacle){
+		if(front_person){
 			avanzar(vel);
 		}
-		else if(front_obstacle && right_obstacle){
-			girar_izq(vel);
-		}
-		else if(front_obstacle && left_obstacle){
+		else if(right_person){
 			girar_der(vel);
 		}
-		else if(front_obstacle){
-			random_choice(vel);
+		else if(left_obstacle){
+			girar_izq(vel);
+		}
+		else(front_obstacle){
+			stop(vel);
 		}
 		
 		publisher->publish(vel);
