@@ -39,6 +39,9 @@ ament_target_dependencies(turtle_square rclcpp geometry_msgs)
 add_executable(square_odom src/square_odom.cpp)
 ament_target_dependencies(square_odom rclcpp geometry_msgs nav_msgs)
 
+add_executable(polygon src/polygon.cpp)
+ament_target_dependencies(polygon rclcpp geometry_msgs)
+
 
 add_executable(wandering src/wandering.cpp)
 ament_target_dependencies(wandering rclcpp geometry_msgs sensor_msgs)
@@ -48,6 +51,7 @@ install(TARGETS
 	turtle_square
 	publisher
 	wandering
+	polygon
 	DESTINATION lib/${PROJECT_NAME}
 
 )
