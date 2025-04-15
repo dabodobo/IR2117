@@ -104,6 +104,7 @@ int main(int argc, char ** argv){
       handle_cancel,
       handle_accepted
   );
+  
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
