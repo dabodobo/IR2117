@@ -14,9 +14,14 @@ find_package(rclcpp_components REQUIRED)
 
 add_executable(action_server src/action_server.cpp)
 ament_target_dependencies(action_server rclcpp rclcpp_action action_tutorials_interfaces)
+add_executable(action_client src/action_client.cpp)
+ament_target_dependencies(action_client rclcpp rclcpp_action action_tutorials_interfaces)
+
 install(TARGETS
   action_server
+  action_client
   DESTINATION lib/${PROJECT_NAME})
+  
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
