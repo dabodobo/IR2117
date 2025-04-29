@@ -8,6 +8,9 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(olympic_interfaces REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
@@ -17,10 +20,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 
 add_executable(rings src/rings.cpp)
-target_include_directories(rings PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_features(rings PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
 ament_target_dependencies(
   rings
   "rclcpp"
@@ -29,7 +29,16 @@ ament_target_dependencies(
   "turtlesim"
 )
 
-install(TARGETS rings
+add_executable(rings_action_client src/rings_action_client.cpp)
+ament_target_dependencies(rings_action_client rclcpp rclcpp_action olympic_interfaces)
+
+add_executable(rings_action_server src/rings_action_server.cpp)
+ament_target_dependencies(rings_action_server rclcpp rclcpp_action olympic_interfaces)
+
+
+
+install(TARGETS rings rings_action_server rings_action_client
+	
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

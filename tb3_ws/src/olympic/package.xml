@@ -13,7 +13,10 @@
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>turtlesim</depend>
-
+  <depend>olympic_interfaces</depend>
+  <depend>rclcpp_actions</depend>
+  <depend>rclcpp_components</depend>
+	
   
 
 
