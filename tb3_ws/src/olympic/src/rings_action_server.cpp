@@ -104,19 +104,19 @@ rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleRing
 void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
 
   RCLCPP_INFO(rclcpp::get_logger("server"), "Executing goal");
-  //rclcpp::Rate loop_rate(1);
-  
+  rclcpp::Rate loop_rate2(1);
+
+  // GOAL
   const auto goal = goal_handle->get_goal();
   const float radio = goal -> radius;
-  //auto feedback = std::make_shared<Rings::Feedback>();
-  
-  //auto& sequence = feedback->partial_sequence;
-  
-   // r = v / w
-  
-  
-  //auto result = std::make_shared<Rings::Result>();
-  //std::cout << result << std::endl;
+
+  // FEEDBACK
+  auto feedback = std::make_shared<Rings::Feedback>(); //rings completed and angle
+  int ring_number = feedback -> drawing_ring;
+
+  // RESULT
+  float angle = feedback -> ring_angle;
+  auto result = std::make_shared<Rings::Result>();
  
   rclcpp::WallRate loop_rate(700ms);
   auto node = rclcpp::Node::make_shared("rings"); //Creación del nodo
@@ -152,7 +152,7 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
 
       publisher->publish(vel);
       rclcpp::spin_some(node);
-      loop_rate.sleep();
+      loop_rate2.sleep();
       n++;
 
 
