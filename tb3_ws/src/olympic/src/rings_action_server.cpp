@@ -113,19 +113,16 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
   // FEEDBACK
   auto feedback = std::make_shared<Rings::Feedback>(); //rings completed and angle
   int ring_number = feedback -> drawing_ring;
-
-  // RESULT
   float angle = feedback -> ring_angle;
+  // RESULT
+
   auto result = std::make_shared<Rings::Result>();
+  int rings_completed = result -> rings_completed;
  
   rclcpp::WallRate loop_rate(700ms);
   auto node = rclcpp::Node::make_shared("rings"); //Creación del nodo
 
   auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10); // Creación del publisher
-
-
-  node -> declare_parameter("radius",radio); // necesitamos declarar previamente el parametro en el nodo antes de obtenerlo en la linea siguiente
-
 
   // Cliente color -----------------------
 
@@ -138,6 +135,19 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
   // ------------------
 
   for(int r = 0; r < 5; r++){
+
+    // en caso de cancelación ...
+    if ( goal_handle->is_canceling() ) {
+
+      result->rings_completed = rings_completed;
+      goal_handle->canceled(result);
+
+      RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Canceled");
+
+      return;
+
+    }
+
     apagar = true; // apago antes de hacer tp para que el pen no dibuje donde no quiero
     call_pen("apagar",client);
     call_tp(pos[r].first, pos[r].second, teleport_client); // hago tp
