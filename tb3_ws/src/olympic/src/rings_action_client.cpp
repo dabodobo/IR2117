@@ -3,7 +3,7 @@
 #include "olympic_interfaces/action/rings.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-
+#include <iostream>
 
 using Rings = olympic_interfaces::action::Rings; //action
 
@@ -13,11 +13,33 @@ using namespace std::chrono_literals;
 
 rclcpp::Node::SharedPtr g_node = nullptr; // pointer al ros node
 
+// VARIABLES GLOBALES
+int p_angle = 0;
+int espacios_angle;
 
+int espacios_ring;
+
+
+void load_bar(int valor, int max, std::string texto){
+  int p =  100 *valor / max;
+  std::cout << std::endl << texto << ": " << p << "%  [ ";
+  for(int i = 0; i != valor; i++){
+    std::cout << "|" ;
+  }
+  for(int i = valor; i < (max-valor); i++){
+    std::cout << " " ;
+
+  }
+  std::cout << " ]" << std::endl;
+
+}
 // Se ejecutará si se ha aceptado el goal ---
 void feedback_callback(GoalHandleRings::SharedPtr,const std::shared_ptr<const Rings::Feedback> feedback){
-  RCLCPP_INFO(g_node->get_logger(),"Number of the ring that is being drawn: %" PRId32,feedback->drawing_ring);
+  RCLCPP_INFO(g_node->get_logger(),"Current ring: %" PRId32,feedback->drawing_ring);
   RCLCPP_INFO(g_node->get_logger(),"Current angle: %f" ,feedback->ring_angle);
+  load_bar(feedback->drawing_ring -1 ,5,"Ring");
+  //load_bar(feedback->ring_angle,10,"Angle");
+
 
 }
 

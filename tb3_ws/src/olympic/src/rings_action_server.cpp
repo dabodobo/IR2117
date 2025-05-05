@@ -161,8 +161,10 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
       vel.linear.x = lin_vel;
       vel.angular.z = lin_vel / radio; // w = v /r
 
-      ring_angle = 3.14 / n;
-
+      ring_angle = 3.14 - (3.14 / n);
+      if(ring_angle < 0){
+        ring_angle = 0;
+      }
       goal_handle -> publish_feedback(feedback);
       RCLCPP_INFO(rclcpp::get_logger("server"), "Publish Feedback: ANGLE");
 
