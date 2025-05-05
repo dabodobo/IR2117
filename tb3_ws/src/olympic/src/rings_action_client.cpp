@@ -16,7 +16,9 @@ rclcpp::Node::SharedPtr g_node = nullptr; // pointer al ros node
 
 // Se ejecutará si se ha aceptado el goal ---
 void feedback_callback(GoalHandleRings::SharedPtr,const std::shared_ptr<const Rings::Feedback> feedback){
-  RCLCPP_INFO(g_node->get_logger(),"Next number in sequence received: %" PRId32,feedback->drawing_ring);
+  RCLCPP_INFO(g_node->get_logger(),"Number of the ring that is being drawn: %" PRId32,feedback->drawing_ring);
+  RCLCPP_INFO(g_node->get_logger(),"Current angle: %f" ,feedback->ring_angle);
+
 }
 
 
