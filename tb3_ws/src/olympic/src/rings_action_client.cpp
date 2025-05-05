@@ -21,8 +21,8 @@ int espacios_ring;
 
 
 void load_bar(int valor, int max, std::string texto){
-  int p =  100 *valor / max;
-  std::cout << std::endl << texto << ": " << p << "%  [ ";
+  int p =  100 *(valor+1) / max;
+  std::cout  << texto << ": " << p << "%  [ |";
   for(int i = 0; i != valor; i++){
     std::cout << "|" ;
   }
@@ -30,7 +30,7 @@ void load_bar(int valor, int max, std::string texto){
     std::cout << " " ;
 
   }
-  std::cout << " ]" << std::endl;
+  std::cout << " ]" << std::endl << std::endl;
 
 }
 // Se ejecutará si se ha aceptado el goal ---
