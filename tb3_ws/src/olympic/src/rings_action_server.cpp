@@ -108,16 +108,16 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
 
   // GOAL
   const auto goal = goal_handle->get_goal();
-  const float radio = goal -> radius;
+  const float& radio = goal -> radius;
 
   // FEEDBACK
   auto feedback = std::make_shared<Rings::Feedback>(); //rings completed and angle
-  int ring_number = feedback -> drawing_ring;
-  float angle = feedback -> ring_angle;
-  // RESULT
+  int& drawing_ring = feedback -> drawing_ring;
+  float& ring_angle = feedback -> ring_angle;
 
+  // RESULT
   auto result = std::make_shared<Rings::Result>();
-  int rings_completed = result -> rings_completed;
+  int& rings_completed = result -> rings_completed;
  
   rclcpp::WallRate loop_rate(700ms);
   auto node = rclcpp::Node::make_shared("rings"); //Creación del nodo
@@ -153,21 +153,39 @@ void execute(const std::shared_ptr<GoalHandleRings> goal_handle){
     call_tp(pos[r].first, pos[r].second, teleport_client); // hago tp
     apagar = false; // enciendo el pen
     call_pen(colores[r],client); // selecciono el color
-    std::cout << "TP: " << pos[r].first << " " << pos[r].second << std::endl; // seguidor de las posiciones
 
+
+    drawing_ring++; // incremento en 1 el ring que estoy dibujando porque empeiza en 0
     while (rclcpp::ok() && n <= 10) {
 
       vel.linear.x = lin_vel;
       vel.angular.z = lin_vel / radio; // w = v /r
 
+      ring_angle = 3.14 / n;
+
+      goal_handle -> publish_feedback(feedback);
+      RCLCPP_INFO(rclcpp::get_logger("server"), "Publish Feedback: ANGLE");
+
       publisher->publish(vel);
       rclcpp::spin_some(node);
-      loop_rate2.sleep();
+
+      loop_rate.sleep();
       n++;
 
 
     }
-    n = 0;
+    n = 0; //esto es para los círculos individuales
+
+    goal_handle -> publish_feedback(feedback);
+    RCLCPP_INFO(rclcpp::get_logger("server"), "Publish Feedback: NUMBER OF RINGS");
+    loop_rate.sleep();
+
+  }
+  if (rclcpp::ok()) {
+
+    result->rings_completed = drawing_ring;
+    goal_handle->succeed(result);
+    RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Succeeded :) ");
 
   }
 
