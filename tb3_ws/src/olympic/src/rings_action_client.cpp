@@ -13,11 +13,7 @@ using namespace std::chrono_literals;
 
 rclcpp::Node::SharedPtr g_node = nullptr; // pointer al ros node
 
-// VARIABLES GLOBALES
-int p_angle = 0;
-int espacios_angle;
 
-int espacios_ring;
 
 
 void load_bar(int valor, int max, std::string texto){
