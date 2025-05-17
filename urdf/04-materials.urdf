@@ -1,10 +1,19 @@
 <?xml version="1.0"?>
-<robot name="myfirst">
+<robot name="materials">
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
 	<link name="base_link">
   		<visual>
   			<geometry>
   				<cylinder length="0.6" radius="0.2"/>
   			</geometry>
+  			<material name="blue"/>
   		</visual>
   	</link>
   	
@@ -13,6 +22,7 @@
   			<geometry>
   				<box size="0.6 0.1 0.2"/>
   			</geometry>
+  			<material name="white"/>
   		</visual>
   	</link>
   	
