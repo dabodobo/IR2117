@@ -23,12 +23,12 @@ if(BUILD_TESTING)
   add_executable(factorial_server src/factorial_server.cpp)
   ament_target_dependencies(factorial_server rclcpp rclcpp_action factorial_interfaces )
 
-  add_executable(factorial_client src/factorial_client.cpp)
-  ament_target_dependencies(factorial_client rclcpp rclcpp_action factorial_interfaces )
+  #add_executable(factorial_client src/factorial_client.cpp)
+  #ament_target_dependencies(factorial_client rclcpp rclcpp_action factorial_interfaces )
 
   install(TARGETS
-          factorial_client
           factorial_server
+
 
   DESTINATION lib/${PROJECT_NAME})
   # the following line skips the linter which checks for copyrights
