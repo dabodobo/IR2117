@@ -128,9 +128,9 @@ int main(int argc, char ** argv){
   }
   RCLCPP_INFO(g_node->get_logger(), "result received");
  /*
-  for (auto number : wrapped_result.result->sequence) {
+  for (auto factorial : wrapped_result.result->sequence) {
   
-    RCLCPP_INFO(g_node->get_logger(), "%" PRId32, number);
+    RCLCPP_INFO(g_node->get_logger(), "%" PRId32, factorial);
     
   }
   */

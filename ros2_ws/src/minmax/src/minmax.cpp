@@ -43,7 +43,7 @@ int main(int argc, char * argv[]){
     auto node = rclcpp::Node::make_shared("minmax"); //creo el nodo minmax
     auto subscription_min = 
         node->create_subscription<std_msgs::msg::Int32>(
-            "number", 10, topic_callback); //me suscribo a topic min
+            "factorial", 10, topic_callback); //me suscribo a topic min
     
     publisher = node->create_publisher<std_msgs::msg::Int32MultiArray>("minmax", 10); 
 

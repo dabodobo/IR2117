@@ -11,11 +11,11 @@ int suma(int num ){
 
 int main(){
 	int num;
-	std::cout << "Enter a number: ";
+	std::cout << "Enter a factorial: ";
 	std::cin >> num;
 	while(num < 1){
 		std::cout << "Rango de número incorrecto" << std::endl;
-		std::cout << "Enter a number: ";
+		std::cout << "Enter a factorial: ";
 		std::cin >> num;
 	}
 

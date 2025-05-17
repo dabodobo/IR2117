@@ -5,5 +5,5 @@ int32 numero
 int32 resultado
 ---
 #Feedback
-int32[] numeros_sumados
+int32[] secuencia_numeros
 int32 resultado_parcial

@@ -16,7 +16,7 @@ rclcpp::Node::SharedPtr g_node = nullptr; // pointer al ros node
 
 // Se ejecutará si se ha aceptado el goal ---
 void feedback_callback(GoalHandleFibonacci::SharedPtr,const std::shared_ptr<const Fibonacci::Feedback> feedback){
-  RCLCPP_INFO(g_node->get_logger(),"Next number in sequence received: %" PRId32,feedback->partial_sequence.back());
+  RCLCPP_INFO(g_node->get_logger(),"Next factorial in sequence received: %" PRId32,feedback->partial_sequence.back());
 }
 
 

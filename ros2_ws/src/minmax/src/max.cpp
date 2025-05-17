@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
     auto node = rclcpp::Node::make_shared("max"); //creo el nodo min
     auto subscription = 
         node->create_subscription<std_msgs::msg::Int32>(
-            "number", 10, topic_callback); //me suscribo a topic
+            "factorial", 10, topic_callback); //me suscribo a topic
     publisher = node->create_publisher<std_msgs::msg::Int32>("max", 10); 
 
     rclcpp::spin(node); 
