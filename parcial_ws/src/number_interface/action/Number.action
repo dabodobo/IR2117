@@ -1,0 +1,9 @@
+#Goal
+int32 numero
+---
+#Result
+int32 resultado
+---
+#Feedback
+int32[] numeros_sumados
+int32 resultado_parcial
