@@ -3,7 +3,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "factorial_interfaces/action/factorial.hpp"
-#include <iostream>
 #include <vector>
 //
 using Factorial = factorial_interfaces::action::Factorial;
@@ -16,7 +15,7 @@ using GoalHandle = rclcpp_action::ServerGoalHandle<Factorial>;
 
 // creamos la conexión
 rclcpp_action::GoalResponse handle_goal( const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const Factorial::Goal> goal){
-    if(goal > 0){
+    if(goal -> numero > 0){
     RCLCPP_INFO(rclcpp::get_logger("server"),"Got goal request with order %d", goal -> numero);
     (void)uuid;
     return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE; // también puede ser REJECT
@@ -47,7 +46,7 @@ void execute(const std::shared_ptr<GoalHandle> goal_handle){
     auto result = std::make_shared<Factorial::Result>();
 
     //ejecución del factorial
-    for(int i = 1; (i < goal -> numero) && rclcpp::ok(); i++){
+    for(int i = 1; (i <= goal -> numero) && rclcpp::ok(); i++){
         if(goal_handle -> is_canceling()){
             result -> resultado = resultado_parcial;
             goal_handle -> canceled(result); // cancelamos el resultado
@@ -59,15 +58,15 @@ void execute(const std::shared_ptr<GoalHandle> goal_handle){
         goal_handle -> publish_feedback(feedback); //nodo que publica el feedback
         RCLCPP_INFO(rclcpp::get_logger("server"),"Publish Feedback");
         loop_rate.sleep();
-
-        if(rclcpp::ok()){
-            result -> resultado = resultado_parcial;
-            goal_handle -> succeed(result); // el resultado es correcto
-            RCLCPP_INFO(rclcpp::get_logger("server"),"Goal Succeed");
-
         }
+    if(rclcpp::ok()){
+        result -> resultado = resultado_parcial;
+        goal_handle -> succeed(result); // el resultado es correcto
+        RCLCPP_INFO(rclcpp::get_logger("server"),"Goal Succeed");
 
     }
+
+
 
 }
 void handle_accepted(const std::shared_ptr<GoalHandle> goal_handle){ // si se acepta el goal se ejecuta un hilo con el execute
