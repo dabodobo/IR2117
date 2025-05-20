@@ -9,7 +9,7 @@ using namespace std::chrono_literals;
 double angle;
 bool reestablecer = true;
 double angle_ref; // no usar
-std::vector<double> medidas = {M_PI/4,-M_PI/2,M_PI/4};
+std::vector<double> medidas = {M_PI/4,M_PI/2,2*M_PI/3, M_PI,-M_PI/4,-M_PI/2,-2*M_PI/3, -M_PI};
 
 float quat(float x, float y, float z, float w){
     float siny_cosp = 2 *(w*z + x*y);
@@ -48,7 +48,22 @@ void turn_right(geometry_msgs::msg::Twist& vel){
 void stop(geometry_msgs::msg::Twist& vel){
     vel.angular.z = 0.0;
 }
-
+void turbo(const double distancia,geometry_msgs::msg::Twist& vel){
+    double aumento_velocidad;
+    if (distancia > 2.8){
+        aumento_velocidad =0.5;
+    }
+    else if(distancia > 2){
+        aumento_velocidad = 0.4;
+    }
+    else if(distancia > 1.4){
+        aumento_velocidad = 0.3;
+    }
+    else{
+        aumento_velocidad = 0.2;
+    }
+    vel.angular.z = aumento_velocidad;
+}
 int main(int argc, char ** argv){
     rclcpp::init(argc,argv);
     auto node = rclcpp::Node::make_shared("rolling");
@@ -61,6 +76,8 @@ int main(int argc, char ** argv){
     for (double i : medidas){
         double goal = i;
         distancia = angle_dist(angle,goal);
+        turbo(distancia,vel);
+        std::cout << "la distancia es : " << distancia << "y mi velocidad es" << vel.angular.z << std::endl;
         std::cout << "voy a girar a " << goal << std::endl;
         while(rclcpp::ok() && abs(distancia) > 0.1 ){
             if(goal < 0){
