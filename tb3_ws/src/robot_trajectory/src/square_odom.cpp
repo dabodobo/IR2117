@@ -28,7 +28,6 @@ float angle_dist(float base_angle, float current){
 	    } else if (dist < -M_PI) {
 		dist += 2 * M_PI;  // Si es menor que -π, sumamos 2π
 	    }
-
 	    return dist;
 	
 }
