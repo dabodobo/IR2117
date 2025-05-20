@@ -11,6 +11,7 @@
   <buildtool_depend>rclcpp</buildtool_depend>
   <buildtool_depend>geometry_msgs</buildtool_depend>
   <buildtool_depend>nav_msgs</buildtool_depend>
+  <buildtool_depend>example_interfaces</buildtool_depend>
 
 
 

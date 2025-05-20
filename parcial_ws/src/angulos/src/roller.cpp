@@ -1,15 +1,27 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
+#include "example_interfaces/msg/bool.hpp"
 #include <cmath>
 #include <iostream>
 #include <vector>
 #include <chrono>
 using namespace std::chrono_literals;
 double angle;
-bool reestablecer = true;
-double angle_ref; // no usar
+
 std::vector<double> medidas = {M_PI/4,M_PI/2,2*M_PI/3, M_PI,-M_PI/4,-M_PI/2,-2*M_PI/3, -M_PI};
+
+bool front =false,left = false,right=false;
+
+void front_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    front = msg -> data;
+}
+void left_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    left= msg -> data;
+}
+void right_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    right = msg -> data;
+}
 
 float quat(float x, float y, float z, float w){
     float siny_cosp = 2 *(w*z + x*y);
@@ -31,12 +43,12 @@ float angle_dist(float base_angle, float current){
     return dist;
 
 }
-void odom_callback(const nav_msgs::msg::Odometry odom){
-    angle = quat(odom.pose.pose.orientation.x, odom.pose.pose.orientation.y, odom.pose.pose.orientation.z, odom.pose.pose.orientation.w);
-    if (reestablecer){
-        angle_ref = angle;
-    }
-    reestablecer = false;
+void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+    angle = quat(msg->pose.pose.orientation.x,
+                 msg->pose.pose.orientation.y,
+                 msg->pose.pose.orientation.z,
+                 msg->pose.pose.orientation.w);
 }
 
 void turn_left(geometry_msgs::msg::Twist& vel){
@@ -51,10 +63,10 @@ void stop(geometry_msgs::msg::Twist& vel){
 void turbo(const double distancia,geometry_msgs::msg::Twist& vel){
     double aumento_velocidad;
     if (distancia > 2.8){
-        aumento_velocidad =0.5;
+        aumento_velocidad =1.0;
     }
     else if(distancia > 2){
-        aumento_velocidad = 0.4;
+        aumento_velocidad = 0.5;
     }
     else if(distancia > 1.4){
         aumento_velocidad = 0.3;
@@ -67,41 +79,65 @@ void turbo(const double distancia,geometry_msgs::msg::Twist& vel){
 int main(int argc, char ** argv){
     rclcpp::init(argc,argv);
     auto node = rclcpp::Node::make_shared("rolling");
-    auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("cmd_vel",10);
-    auto subscriber = node -> create_subscription<nav_msgs::msg::Odometry>("odom",10,odom_callback);
+    auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
+    auto subscriber = node -> create_subscription<nav_msgs::msg::Odometry>("/odom",10,odom_callback);
+    auto sub_front = node -> create_subscription<example_interfaces::msg::Bool>("/front/obstacle",10,front_callback);
+    auto sub_left = node -> create_subscription<example_interfaces::msg::Bool>("/left/obstacle",10,left_callback);
+    auto sub_right = node -> create_subscription<example_interfaces::msg::Bool>("/right/obstacle",10,right_callback);
     geometry_msgs::msg::Twist vel;
-    rclcpp::WallRate loop_rate(500ms);
+    rclcpp::WallRate loop_rate(100ms);
+
     double goal;
     double distancia;
-    for (double i : medidas){
-        double goal = i;
-        distancia = angle_dist(angle,goal);
-        turbo(distancia,vel);
-        std::cout << "la distancia es : " << distancia << "y mi velocidad es" << vel.angular.z << std::endl;
-        std::cout << "voy a girar a " << goal << std::endl;
-        while(rclcpp::ok() && abs(distancia) > 0.1 ){
-            if(goal < 0){
-                turn_right(vel);
-                std::cout << "giro a la derecha" << std::endl;
+    bool girar = false;
+    while(rclcpp::ok()){
+
+        girar = front || right || left;
+
+        if (girar) {
+            if(front){
+                goal = 0;
             }
-            else{
-                turn_left(vel);
-                std::cout << "giro a la izquierda" << std::endl;
+            else if(right){
+                goal = -M_PI/2;
             }
-            distancia = angle_dist(angle,goal);
-            publisher -> publish(vel);
+            else if(left){
+                goal = M_PI/2;
+            }
+
+            distancia = angle_dist(angle, goal);
+            std::cout << "Voy a girar hacia " << goal << " (distancia: " << distancia << " rad)" << std::endl;
+
+            while(rclcpp::ok() && std::abs(distancia) > 0.2){
+                rclcpp::spin_some(node);
+                distancia = angle_dist(angle, goal);
+
+                if(goal < 0){
+                    turn_right(vel);
+                }
+                else{
+                    turn_left(vel);
+                }
+
+
+                publisher->publish(vel);
+                rclcpp::spin_some(node);
+                loop_rate.sleep();
+            }
+
+            stop(vel);
+            publisher->publish(vel);
             rclcpp::spin_some(node);
             loop_rate.sleep();
+            std::cout << "Parado" << std::endl;
         }
-
         stop(vel);
-        reestablecer = true;
-        publisher -> publish(vel);
+        publisher->publish(vel);
         rclcpp::spin_some(node);
         loop_rate.sleep();
-        std::cout << "paro" << std::endl;
-
+        std::cout << "Parado" << std::endl;
     }
+
     std::cout << "acabé" << std::endl;
     stop(vel);
     publisher -> publish(vel);
