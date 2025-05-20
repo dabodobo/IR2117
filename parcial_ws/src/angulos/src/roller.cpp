@@ -8,8 +8,8 @@
 using namespace std::chrono_literals;
 double angle;
 bool reestablecer = true;
-double angle_ref;
-std::vector<double> medidas = {M_PI/4,-M_PI/2};
+double angle_ref; // no usar
+std::vector<double> medidas = {M_PI/4,-M_PI/2,M_PI/4};
 
 float quat(float x, float y, float z, float w){
     float siny_cosp = 2 *(w*z + x*y);
@@ -56,24 +56,29 @@ int main(int argc, char ** argv){
     auto subscriber = node -> create_subscription<nav_msgs::msg::Odometry>("odom",10,odom_callback);
     geometry_msgs::msg::Twist vel;
     rclcpp::WallRate loop_rate(500ms);
-    double distancia = angle_dist(angle,angle_ref);
+    double goal;
+    double distancia;
     for (double i : medidas){
         double goal = i;
+        distancia = angle_dist(angle,goal);
         std::cout << "voy a girar a " << goal << std::endl;
-        while(rclcpp::ok() && distancia < abs(goal)){
-            if(abs(goal) > abs(angle)){
+        while(rclcpp::ok() && abs(distancia) > 0.1 ){
+            if(goal < 0){
                 turn_right(vel);
                 std::cout << "giro a la derecha" << std::endl;
             }
-            else if(abs(goal) < abs(angle)){
+            else{
                 turn_left(vel);
                 std::cout << "giro a la izquierda" << std::endl;
             }
+            distancia = angle_dist(angle,goal);
             publisher -> publish(vel);
             rclcpp::spin_some(node);
             loop_rate.sleep();
         }
+
         stop(vel);
+        reestablecer = true;
         publisher -> publish(vel);
         rclcpp::spin_some(node);
         loop_rate.sleep();
