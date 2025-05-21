@@ -5,10 +5,9 @@
 #include <cmath>
 #include <iostream>
 using namespace std::chrono_literals;
-std::map<std::string, float> position;
-bool first_read = true;
-float v = 0.1;
-bool circle_completed = false;
+
+
+
 
 
 void girar(geometry_msgs::msg::Twist& vel,double distance,double angle,double angular_speed ){
@@ -42,7 +41,7 @@ int main (int argc, char* argv[]){
   
   rclcpp::WallRate loop_rate(500ms);
   
-  int time = 1;
+  float time = 1.0;
   geometry_msgs::msg::Twist vel;
   vel.angular.z = angular_speed;
   double angle;
@@ -53,15 +52,19 @@ int main (int argc, char* argv[]){
     
     std::cout << "Voy por la vuelta: " << vuelta << std::endl;
     while(rclcpp::ok() && n <= 2*M_PI/(0.5*angular_speed)){
-    	    angle = time*angular_speed;
+    	    angle = (time*angular_speed);
+    	    n++;
+	    time+=0.5;
 	    girar(vel,distance_between_loops,angle,angular_speed);
 	    publisher -> publish(vel);
-	    n++;
-	    time ++;
 	    rclcpp::spin_some(node);
 	    loop_rate.sleep();
+	    std::cout << "mi velocidad es: " <<vel.linear.x <<std::endl;
+	    std::cout << "mi angulo  es: " <<n <<std::endl <<std::endl;
     
     }
+   
+    
     
     stop(vel);
     publisher -> publish(vel);
