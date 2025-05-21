@@ -50,14 +50,14 @@ int main (int argc, char* argv[]){
   
   for(int vuelta = 1; vuelta <= number_of_loops; vuelta++){
     int n = 0; 
-    time++;
+    
     std::cout << "Voy por la vuelta: " << vuelta << std::endl;
     while(rclcpp::ok() && n <= 2*M_PI/(0.5*angular_speed)){
     	    angle = time*angular_speed;
 	    girar(vel,distance_between_loops,angle,angular_speed);
 	    publisher -> publish(vel);
 	    n++;
-	    time++;
+	    time ++;
 	    rclcpp::spin_some(node);
 	    loop_rate.sleep();
     
