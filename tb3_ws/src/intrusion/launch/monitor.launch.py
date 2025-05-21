@@ -43,7 +43,7 @@ def generate_launch_description():
 			{"obs_angle_min": 0.5},
 			{"obs_angle_max": 1.1},
 			{"obs_threshold": 2.0}]
-	)
+	),
 	Node(
 		package='obstacles',
 		executable='detector',
@@ -79,7 +79,13 @@ def generate_launch_description():
 			{"obs_angle_min": -2.5},
 			{"obs_angle_max": -2.0},
 			{"obs_threshold": 2.0}]
-	)
+	),
+	Node(
+		package='intrusion',
+		executable='monitor',
+		
+	),
+	
 	
 
 ])
