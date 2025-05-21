@@ -11,7 +11,16 @@ def generate_launch_description():
 				{"angular_speed":6.0},
 				{"distance_between_loops":0.5},
 				{"number_of_loops":6}
-			]
+			],
+			remappings=[
+				('/cmd_vel', 'turtle1/cmd_vel'),
+			],
+		),
+		Node(
+			package= 'turtlesim',
+			executable = 'turtlesim_node',
+
+			
 		)
 		
 	])	

@@ -26,7 +26,7 @@ void stop(geometry_msgs::msg::Twist& vel){
 int main (int argc, char* argv[]){
   rclcpp::init(argc,argv);
   auto node = rclcpp::Node::make_shared("spiral");
-  auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/turtle1/cmd_vel",10);
+  auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
   
   // Declaración de parámetros
   
