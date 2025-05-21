@@ -10,9 +10,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
-add_executable(monitor src/monitor)
-ament_target_dependencies(monitor rclcpp nav_msgs geometry_msgs)
+add_executable(monitor src/monitor.cpp)
+ament_target_dependencies(monitor rclcpp nav_msgs geometry_msgs example_interfaces)
 
 install(TARGETS
         monitor

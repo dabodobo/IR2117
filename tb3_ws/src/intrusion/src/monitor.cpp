@@ -11,7 +11,7 @@ double angle;
 
 
 
-bool north =false,northeast = false, northweast=false, south = false, southeast = false, southweast = false, east = false, weast = false;
+bool north =false,northeast = false, northwest=false, south= false, southeast= false, southwest= false, east= false, west= false;
 
 void north_callback(const example_interfaces::msg::Bool::SharedPtr msg){
     north = msg -> data;
@@ -21,27 +21,27 @@ void northeast_callback(const example_interfaces::msg::Bool::SharedPtr msg){
     northeast = msg -> data;
 }
 
-void northweast_callback(const example_interfaces::msg::Bool::SharedPtr msg){
-    northweast = msg -> data;
+void northwest_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    northwest = msg -> data;
 }
 
-void weast_callback(const example_interfaces::msg::Bool::SharedPtr msg){
-    weast= msg -> data;
+void west_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    west= msg -> data;
 }
 void east_callback(const example_interfaces::msg::Bool::SharedPtr msg){
     east = msg -> data;
 }
 
-void south(const example_interfaces::msg::Bool::SharedPtr msg){
+void south_callback(const example_interfaces::msg::Bool::SharedPtr msg){
     south = msg -> data;
 }
 
-void southeast(const example_interfaces::msg::Bool::SharedPtr msg){
+void southeast_callback(const example_interfaces::msg::Bool::SharedPtr msg){
     southeast = msg -> data;
 }
 
-void southweast(const example_interfaces::msg::Bool::SharedPtr msg){
-    southweast = msg -> data;
+void southwest_callback(const example_interfaces::msg::Bool::SharedPtr msg){
+    southwest = msg -> data;
 }
 
 float quat(float x, float y, float z, float w){
@@ -96,17 +96,18 @@ int main(int argc, char ** argv){
     auto sub_south = node -> create_subscription<example_interfaces::msg::Bool>("/south/obstacle",10,south_callback);
     
     auto sub_southeast = node -> create_subscription<example_interfaces::msg::Bool>("/southeast/obstacle",10,southeast_callback);
-    auto sub_southweast = node -> create_subscription<example_interfaces::msg::Bool>("/southweast/obstacle",10,southweast_callback);
+    auto sub_southweast = node -> create_subscription<example_interfaces::msg::Bool>("/southwest/obstacle",10,southwest_callback);
     
     geometry_msgs::msg::Twist vel;
+    
     rclcpp::WallRate loop_rate(100ms);
 
     double goal;
     double distancia;
     bool girar = false;
     while(rclcpp::ok()){
-
-        girar = north || northeast || northweast || east || weast || south || southweast || southeast;
+	stop(vel);
+        girar = north || northeast || northwest || east || west || south || southwest || southeast;
 
         if (girar) {
             if(north){
@@ -115,7 +116,7 @@ int main(int argc, char ** argv){
             else if(east){
                 goal = -M_PI/2;
             }
-            else if(weast){
+            else if(west){
                 goal = M_PI/2;
             }
              else if(south){
@@ -124,13 +125,13 @@ int main(int argc, char ** argv){
              else if(northeast){
                 goal = -M_PI/4;
             }
-             else if(northweast){
+             else if(northwest){
                 goal = -M_PI/4;
             }
              else if(southeast){
                 goal = -3*M_PI/4;
             }
-             else if(weast){
+             else if(southwest){
                 goal = 3*M_PI/4;
             }
             
