@@ -126,7 +126,7 @@ int main(int argc, char ** argv){
                 goal = -M_PI/4;
             }
              else if(northwest){
-                goal = -M_PI/4;
+                goal = M_PI/4;
             }
              else if(southeast){
                 goal = -3*M_PI/4;
