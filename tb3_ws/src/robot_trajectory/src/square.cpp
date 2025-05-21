@@ -7,7 +7,7 @@ using namespace std::chrono_literals;
 int main(int argc, char *argv[]) {
     rclcpp::init(argc, argv); 
     auto node = rclcpp::Node::make_shared("publisher"); 
-    auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10); 
+    auto publisher = node->create_publisher<geometry_msgs::msg::Twist>("/turtle1/cmd_vel", 10); 
     
     geometry_msgs::msg::Twist message;  //creo el mensaje cmd_vel
 

@@ -46,12 +46,16 @@ ament_target_dependencies(polygon rclcpp geometry_msgs)
 add_executable(wandering src/wandering.cpp)
 ament_target_dependencies(wandering rclcpp geometry_msgs sensor_msgs)
 
+add_executable(spiral src/spiral.cpp)
+ament_target_dependencies(spiral rclcpp geometry_msgs)
+
 install(TARGETS
 	square_odom
 	turtle_square
 	publisher
 	wandering
 	polygon
+	spiral
 	DESTINATION lib/${PROJECT_NAME}
 
 )

@@ -11,10 +11,9 @@ float v = 0.1;
 bool circle_completed = false;
 
 
-void girar(geometry_msgs::msg::Twist& vel,double distance,double time){
-      double angle = vel.angular.z * time;
-      vel.linear.x = (angular*distance*angle)/(2*M_PI);
-      
+void girar(geometry_msgs::msg::Twist& vel,double distance,double angle,double angular_speed ){
+      vel.linear.x = (angular_speed*distance*angle)/(2*M_PI);
+      vel.angular.z = angular_speed;
 }
 
 void stop(geometry_msgs::msg::Twist& vel){
@@ -28,7 +27,7 @@ void stop(geometry_msgs::msg::Twist& vel){
 int main (int argc, char* argv[]){
   rclcpp::init(argc,argv);
   auto node = rclcpp::Node::make_shared("spiral");
-  auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
+  auto publisher = node -> create_publisher<geometry_msgs::msg::Twist>("/turtle1/cmd_vel",10);
   
   // Declaración de parámetros
   
@@ -43,18 +42,26 @@ int main (int argc, char* argv[]){
   
   rclcpp::WallRate loop_rate(500ms);
   
-  
+  int time = 1;
   geometry_msgs::msg::Twist vel;
-  
+  vel.angular.z = angular_speed;
+  double angle;
   std::cout << "Empiezo . . .  "<< std::endl;
   
   for(int vuelta = 1; vuelta <= number_of_loops; vuelta++){
-    int n = 0 
-    while(rclcpp::ok() && n <= M_PI/(0.5*angular_speed)){
-    girar(vel,distance_between_loops,time);
-    publisher -> publish(vel);
-    rclcpp::spin_some(node);
-    loop_rate.sleep();
+    int n = 0; 
+    time++;
+    std::cout << "Voy por la vuelta: " << vuelta << std::endl;
+    
+    while(rclcpp::ok() && n <= 2*M_PI/(0.5*angular_speed)){
+    	    angle = time*angular_speed;
+	    girar(vel,distance_between_loops,angle,angular_speed);
+	    publisher -> publish(vel);
+	    n++;
+	    time++;
+	    rclcpp::spin_some(node);
+	    loop_rate.sleep();
+    
     }
     stop(vel);
     publisher -> publish(vel);
